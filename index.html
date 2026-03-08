@@ -19,10 +19,8 @@
       --hole-w:  22px;
       --strip-h: 48px;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
     body {
       background: var(--cream);
       color: var(--ink);
@@ -32,8 +30,6 @@
       overflow-x: hidden;
       cursor: none;
     }
-
-    /* ── CURSOR ── */
     #cur {
       width: 10px; height: 10px;
       background: var(--orange);
@@ -53,8 +49,6 @@
       z-index: 9998;
       opacity: .4;
     }
-
-    /* ── FILM STRIP BORDER (top + bottom repeated) ── */
     .film-strip {
       position: fixed;
       left: 0; right: 0;
@@ -67,7 +61,6 @@
     }
     .film-strip.top    { top: 0; }
     .film-strip.bottom { bottom: 0; }
-
     .film-holes {
       display: flex;
       gap: 18px;
@@ -76,12 +69,10 @@
       animation: slideHoles 8s linear infinite;
     }
     .film-strip.bottom .film-holes { animation-direction: reverse; }
-
     @keyframes slideHoles {
       from { transform: translateX(0); }
       to   { transform: translateX(-300px); }
     }
-
     .hole {
       width: var(--hole-w);
       height: 16px;
@@ -90,8 +81,6 @@
       flex-shrink: 0;
       opacity: .85;
     }
-
-    /* Vertical film edges */
     .film-edge {
       position: fixed;
       top: var(--strip-h);
@@ -108,7 +97,6 @@
     }
     .film-edge.left  { left: 0; }
     .film-edge.right { right: 0; }
-
     .film-edge-holes {
       display: flex;
       flex-direction: column;
@@ -116,12 +104,10 @@
       animation: slideVHoles 10s linear infinite;
     }
     .film-edge.right .film-edge-holes { animation-direction: reverse; }
-
     @keyframes slideVHoles {
       from { transform: translateY(0); }
       to   { transform: translateY(-300px); }
     }
-
     .vhole {
       width: 16px; height: var(--hole-w);
       background: var(--cream);
@@ -129,8 +115,6 @@
       flex-shrink: 0;
       opacity: .85;
     }
-
-    /* ── NAV ── */
     nav {
       position: fixed;
       top: var(--strip-h);
@@ -166,15 +150,12 @@
       transition: color .2s;
     }
     .nav-links a:hover { color: var(--orange); }
-
-    /* ── HERO PARALLAX ── */
     .hero {
       position: relative;
       height: 100vh;
       margin: var(--strip-h) var(--strip-h) 0;
       overflow: hidden;
     }
-
     .hero-bg {
       position: absolute;
       inset: -15%;
@@ -183,7 +164,6 @@
       background-position: center top;
       will-change: transform;
     }
-
     .hero-overlay {
       position: absolute;
       inset: 0;
@@ -194,14 +174,12 @@
         rgba(245,240,232,.85) 100%
       );
     }
-
     .hero-content {
       position: absolute;
       bottom: 72px;
       left: 52px;
       right: 52px;
     }
-
     .hero-tag {
       font-size: 10px;
       letter-spacing: .22em;
@@ -211,7 +189,6 @@
       opacity: 0;
       animation: fadeUp .8s ease .3s forwards;
     }
-
     .hero-name {
       font-family: 'IM Fell English', serif;
       font-size: clamp(52px, 8vw, 110px);
@@ -224,7 +201,6 @@
       animation: fadeUp .8s ease .5s forwards;
     }
     .hero-name em { font-style: italic; color: var(--orange); }
-
     .hero-sub {
       font-size: 12px;
       color: var(--ink2);
@@ -233,7 +209,6 @@
       opacity: 0;
       animation: fadeUp .8s ease .7s forwards;
     }
-
     .hero-scroll {
       position: absolute;
       right: 52px;
@@ -255,21 +230,13 @@
       animation: scrollPulse 2s ease infinite;
     }
     @keyframes scrollPulse { 0%,100%{opacity:.3}50%{opacity:1} }
-
     @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-
-    /* ── MAIN CONTENT AREA ── */
-    main {
-      margin: 0 var(--strip-h) var(--strip-h);
-    }
-
-    /* ── SECTION SHARED ── */
+    main { margin: 0 var(--strip-h) var(--strip-h); }
     .section {
       padding: 100px 52px;
       border-top: 1px solid var(--warm);
     }
-
     .section-label {
       font-size: 10px;
       letter-spacing: .22em;
@@ -285,15 +252,12 @@
       width: 32px; height: 1px;
       background: var(--orange);
     }
-
-    /* ── ABOUT ── */
     #about {
       display: grid;
       grid-template-columns: 1fr 1.1fr;
       gap: 80px;
       align-items: start;
     }
-
     .about-heading {
       font-family: 'IM Fell English', serif;
       font-size: clamp(38px, 4.5vw, 64px);
@@ -302,7 +266,6 @@
       margin-top: 12px;
     }
     .about-heading em { font-style: italic; color: var(--orange); }
-
     .about-bio {
       color: var(--ink2);
       font-size: 13px;
@@ -310,7 +273,6 @@
       margin-bottom: 44px;
     }
     .about-bio strong { color: var(--ink); font-weight: 700; }
-
     .skills-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -326,10 +288,6 @@
     .skill-item:hover { background: var(--paper); }
     .skill-name { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
     .skill-level { font-size: 10px; color: var(--muted); }
-
-    /* ── WORK ── */
-    #work { }
-
     .work-heading {
       font-family: 'IM Fell English', serif;
       font-size: clamp(38px, 4.5vw, 64px);
@@ -338,8 +296,6 @@
       margin-bottom: 56px;
     }
     .work-heading em { font-style: italic; color: var(--orange); }
-
-    /* Full-bleed image grid with film-frame feel */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
@@ -347,24 +303,21 @@
       gap: 3px;
       background: var(--ink);
     }
-
+    /* card può essere sia <div> che <a> */
     .project-card {
       position: relative;
       overflow: hidden;
-      cursor: none;
+      cursor: pointer;
       background: var(--ink2);
       display: block;
       text-decoration: none;
       color: inherit;
     }
-
-    /* Layout: big left, stacked right */
-    .projects-grid > *:nth-child(1) { grid-column: 1 / 8;  grid-row: 1 / 3; aspect-ratio: unset; min-height: 560px; }
+    .projects-grid > *:nth-child(1) { grid-column: 1 / 8;  grid-row: 1 / 3; min-height: 560px; }
     .projects-grid > *:nth-child(2) { grid-column: 8 / 13; grid-row: 1 / 2; }
     .projects-grid > *:nth-child(3) { grid-column: 8 / 13; grid-row: 2 / 3; }
     .projects-grid > *:nth-child(4) { grid-column: 1 / 6;  grid-row: 3 / 4; min-height: 340px; }
     .projects-grid > *:nth-child(5) { grid-column: 6 / 13; grid-row: 3 / 4; min-height: 340px; }
-
     .project-card img {
       width: 100%; height: 100%;
       object-fit: cover;
@@ -373,7 +326,6 @@
       filter: saturate(90%);
     }
     .project-card:hover img { transform: scale(1.04); filter: saturate(110%); }
-
     .project-placeholder {
       width: 100%; height: 100%;
       min-height: 280px;
@@ -389,7 +341,6 @@
     .ph-icon { font-size: 26px; opacity: .3; }
     .ph-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
     .ph-code  { font-size: 10px; color: var(--warm); font-family: 'Courier Prime', monospace; margin-top: 6px; }
-
     .project-overlay {
       position: absolute;
       inset: 0;
@@ -405,8 +356,6 @@
     .proj-cat   { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
     .proj-title { font-family: 'IM Fell English', serif; font-size: 24px; color: var(--cream); margin-bottom: 6px; }
     .proj-desc  { font-size: 11px; color: rgba(245,240,232,.55); line-height: 1.65; }
-
-    /* Frame number decoration */
     .frame-num {
       position: absolute;
       top: 12px; left: 14px;
@@ -416,8 +365,6 @@
       font-family: 'Courier Prime', monospace;
       pointer-events: none;
     }
-
-    /* ── CATEGORIES ── */
     .categories-row {
       display: grid;
       grid-template-columns: repeat(3,1fr);
@@ -433,6 +380,9 @@
       align-items: center;
       gap: 22px;
       transition: background .2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
     }
     .cat-item:hover { background: var(--paper); }
     .cat-num {
@@ -445,15 +395,12 @@
     }
     .cat-title { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
     .cat-sub   { font-size: 10px; color: var(--muted); }
-
-    /* ── CONTACT ── */
     #contact {
       min-height: 55vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
-
     .contact-heading {
       font-family: 'IM Fell English', serif;
       font-size: clamp(48px, 8vw, 96px);
@@ -463,7 +410,6 @@
       margin-bottom: 52px;
     }
     .contact-heading em { font-style: italic; color: var(--orange); }
-
     .contact-links { display: flex; gap: 48px; flex-wrap: wrap; }
     .contact-link { display: flex; flex-direction: column; gap: 6px; text-decoration: none; }
     .cl-label { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
@@ -475,8 +421,6 @@
       transition: color .2s, border-color .2s;
     }
     .contact-link:hover .cl-value { color: var(--orange); border-color: var(--orange); }
-
-    /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--warm);
       padding: 28px 52px;
@@ -487,12 +431,8 @@
       letter-spacing: .1em;
       color: var(--muted);
     }
-
-    /* ── REVEAL ── */
     .reveal { opacity: 0; transform: translateY(24px); transition: opacity .75s ease, transform .75s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       :root { --strip-h: 36px; --hole-w: 16px; }
       nav { padding: 16px 24px; }
@@ -501,38 +441,29 @@
       .section { padding: 72px 28px; }
       #about { grid-template-columns: 1fr; gap: 36px; }
       .projects-grid { grid-template-columns: 1fr; }
-      .project-card:nth-child(n) { grid-column: auto; grid-row: auto; min-height: 280px; }
+      .projects-grid > *:nth-child(n) { grid-column: auto; grid-row: auto; min-height: 280px; }
       .categories-row { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 10px; text-align: center; }
     }
   </style>
 </head>
 <body>
-
   <div id="cur"></div>
   <div id="cur-ring"></div>
 
-  <!-- Film strip top -->
   <div class="film-strip top">
     <div class="film-holes" id="holes-top"></div>
   </div>
-
-  <!-- Film strip bottom -->
   <div class="film-strip bottom">
     <div class="film-holes" id="holes-bottom"></div>
   </div>
-
-  <!-- Film edge left -->
   <div class="film-edge left">
     <div class="film-edge-holes" id="vholes-left"></div>
   </div>
-
-  <!-- Film edge right -->
   <div class="film-edge right">
     <div class="film-edge-holes" id="vholes-right"></div>
   </div>
 
-  <!-- NAV -->
   <nav id="nav">
     <a href="#" class="nav-logo">EC</a>
     <ul class="nav-links">
@@ -545,7 +476,6 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
   <div class="hero">
     <div class="hero-bg" id="heroBg"></div>
     <div class="hero-overlay"></div>
@@ -557,10 +487,7 @@
     <div class="hero-scroll">Scroll</div>
   </div>
 
-  <!-- MAIN -->
   <main>
-
-    <!-- ABOUT -->
     <section class="section" id="about">
       <div>
         <div class="section-label">About</div>
@@ -594,14 +521,12 @@
       </div>
     </section>
 
-    <!-- WORK -->
     <section class="section" id="work">
       <div class="section-label reveal">Work</div>
       <h2 class="work-heading reveal">Progetti<br><em>selezionati</em></h2>
 
       <div class="projects-grid reveal">
 
-        <!-- Card 1 — grande sinistra -->
         <a href="fotografia.html" class="project-card">
           <span class="frame-num">01A ▸</span>
           <div class="project-placeholder">
@@ -616,7 +541,6 @@
           </div>
         </a>
 
-        <!-- Card 2 -->
         <a href="modellazione-3d.html" class="project-card">
           <span class="frame-num">02A ▸</span>
           <div class="project-placeholder">
@@ -631,7 +555,6 @@
           </div>
         </a>
 
-        <!-- Card 3 -->
         <a href="fotografia.html" class="project-card">
           <span class="frame-num">03A ▸</span>
           <div class="project-placeholder">
@@ -646,7 +569,6 @@
           </div>
         </a>
 
-        <!-- Card 4 -->
         <a href="ux-design.html" class="project-card">
           <span class="frame-num">04A ▸</span>
           <div class="project-placeholder">
@@ -661,7 +583,6 @@
           </div>
         </a>
 
-        <!-- Card 5 -->
         <div class="project-card">
           <span class="frame-num">05A ▸</span>
           <div class="project-placeholder">
@@ -679,21 +600,21 @@
       </div>
 
       <div class="categories-row reveal">
-        <a href="fotografia.html" class="cat-item" style="text-decoration:none;color:inherit;">
+        <a href="fotografia.html" class="cat-item">
           <div class="cat-num">01</div>
           <div>
             <div class="cat-title">Fotografia</div>
             <div class="cat-sub">Ritratto · Paesaggio · Reportage</div>
           </div>
         </a>
-        <a href="modellazione-3d.html" class="cat-item" style="text-decoration:none;color:inherit;">
+        <a href="modellazione-3d.html" class="cat-item">
           <div class="cat-num">02</div>
           <div>
             <div class="cat-title">3D & Motion</div>
             <div class="cat-sub">Blender · Unity · Rendering</div>
           </div>
         </a>
-        <a href="ux-design.html" class="cat-item" style="text-decoration:none;color:inherit;">
+        <a href="ux-design.html" class="cat-item">
           <div class="cat-num">03</div>
           <div>
             <div class="cat-title">Design Digitale</div>
@@ -703,7 +624,6 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
     <section class="section" id="contact">
       <div class="reveal">
         <h2 class="contact-heading">Lavoriamo<br><em>insieme?</em></h2>
@@ -729,11 +649,9 @@
       <span>Torino, Italia</span>
       <span>enriquecappellini.github.io</span>
     </footer>
-
   </main>
 
   <script>
-    // ── Film holes generation ──
     function makeHoles(id, count) {
       const el = document.getElementById(id);
       if (!el) return;
@@ -748,7 +666,6 @@
     makeHoles('vholes-left', 80);
     makeHoles('vholes-right', 80);
 
-    // ── Custom cursor ──
     const cur = document.getElementById('cur');
     const ring = document.getElementById('cur-ring');
     let mx=0, my=0, rx=0, ry=0;
@@ -763,20 +680,16 @@
       requestAnimationFrame(animRing);
     })();
 
-    // ── Nav scroll ──
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
 
-    // ── Parallax hero ──
     const heroBg = document.getElementById('heroBg');
     window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      heroBg.style.transform = `translateY(${y * 0.45}px)`;
+      heroBg.style.transform = `translateY(${window.scrollY * 0.45}px)`;
     }, { passive: true });
 
-    // ── Reveal on scroll ──
     const io = new IntersectionObserver(entries => {
-      entries.forEach((e,i) => {
+      entries.forEach((e, i) => {
         if (e.isIntersecting) {
           setTimeout(() => e.target.classList.add('visible'), i * 90);
           io.unobserve(e.target);

@@ -22,13 +22,27 @@
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--cream);
+      background-color: var(--cream);
+      background-image: url('film-ref.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center center;
       color: var(--ink);
       font-family: 'Courier Prime', 'Courier New', monospace;
       font-size: 13px;
       line-height: 1.75;
       overflow-x: hidden;
       cursor: none;
+    }
+
+    /* cream tint over film texture — keeps content readable */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(245, 240, 232, 0.80);
+      z-index: 0;
+      pointer-events: none;
     }
 
     /* ── CURSOR ── */
@@ -133,10 +147,13 @@
     }
     .hero-bg {
       position: absolute;
-      inset: -15%;
-      background-image: url('hero.jpg');
-      background-size: cover;
-      background-position: center top;
+      inset: 0;
+      overflow: hidden;
+    }
+    .hero-bg video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
       will-change: transform;
     }
     .hero-overlay {
@@ -465,7 +482,11 @@
 
     <!-- HERO -->
     <div class="hero">
-      <div class="hero-bg" id="heroBg"></div>
+      <div class="hero-bg" id="heroBg">
+        <video autoplay muted loop playsinline>
+          <source src="hero.mp4" type="video/mp4">
+        </video>
+      </div>
       <div class="hero-overlay"></div>
       <div class="hero-content">
         <p class="hero-tag">Portfolio — 2025</p>
@@ -618,9 +639,9 @@
         <div class="reveal">
           <h2 class="contact-heading">Lavoriamo<br><em>insieme?</em></h2>
           <div class="contact-links">
-            <a href="mailto:enrique.cappellini@gmail.com" class="contact-link">
+            <a href="/cdn-cgi/l/email-protection#31545f43584044541f52504141545d5d585f5871565c50585d1f525e5c" class="contact-link">
               <span class="cl-label">Email</span>
-              <span class="cl-value">enrique.cappellini@gmail.com</span>
+              <span class="cl-value"><span class="__cf_email__" data-cfemail="472229352e3632226924263737222b2b2e292e07202a262e2b6924282a">[email&#160;protected]</span></span>
             </a>
             <a href="https://www.instagram.com/enrique.cappellini/" target="_blank" class="contact-link">
               <span class="cl-label">Instagram</span>
@@ -644,7 +665,7 @@
 
   </div><!-- /page-wrap -->
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // ── Size film strips to full document height ──
     function initStrips() {
       const h = document.documentElement.scrollHeight;
@@ -673,10 +694,10 @@
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
 
-    // ── Parallax hero ──
+    // ── Parallax hero (video — slight translateY on scroll) ──
     const heroBg = document.getElementById('heroBg');
     window.addEventListener('scroll', () => {
-      heroBg.style.transform = `translateY(${window.scrollY * 0.45}px)`;
+      heroBg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
     }, { passive: true });
 
     // ── Reveal on scroll ──

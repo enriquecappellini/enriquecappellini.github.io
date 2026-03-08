@@ -59,93 +59,32 @@
       position: absolute;
       top: 0;
       width: var(--strip-w);
-      /* tall enough to cover any page length */
-      min-height: 100%;
-      background: #0f0e0d;
+      background-image: url('film-ref.jpg');
+      background-size: cover;
+      background-repeat: repeat-y;
+      background-position: center top;
       z-index: 50;
       pointer-events: none;
     }
     .film-strip-v.left  { left: 0; }
-    .film-strip-v.right { right: 0; }
+    .film-strip-v.right { right: 0; transform: scaleX(-1); }
 
-    /* sprocket holes column */
-    .sprockets {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 0;
-      gap: 14px;
-    }
-
-    .sprocket {
-      width: 26px;
-      height: 18px;
-      border-radius: 3px;
-      background: transparent;
-      border: 2px solid rgba(245,240,232,0.18);
-      flex-shrink: 0;
-    }
-
-    /* thin edge line (like the film border) */
-    .film-strip-v.left::after {
-      content: '';
-      position: absolute;
-      top: 0; right: 0;
-      width: 1px; height: 100%;
-      background: rgba(245,240,232,0.06);
-    }
-    .film-strip-v.right::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 1px; height: 100%;
-      background: rgba(245,240,232,0.06);
-    }
-
-    /* Subtle blue-teal tint like the Rollei negative */
-    .film-strip-v::before {
+    /* slight dark overlay so it doesn't overpower */
+    .film-strip-v::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(30,50,80,0.18) 0%,
-        rgba(10,20,40,0.08) 40%,
-        rgba(30,50,80,0.15) 70%,
-        rgba(10,20,40,0.06) 100%
-      );
-      pointer-events: none;
-    }
-    /* override the ::before for the right strip border */
-    .film-strip-v.right::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(30,50,80,0.18) 0%,
-        rgba(10,20,40,0.08) 40%,
-        rgba(30,50,80,0.15) 70%,
-        rgba(10,20,40,0.06) 100%
-      );
-      width: 100%;
-      height: 100%;
-    }
-    /* edge line for right strip (re-add since ::before is taken) */
-    .right-edge-line {
-      position: absolute;
-      top: 0; left: 0;
-      width: 1px; height: 100%;
-      background: rgba(245,240,232,0.06);
+      background: rgba(8, 12, 18, 0.15);
     }
 
-    /* Wrapper: positions film strips as siblings to content */
+    /* inner shadow to blend smoothly into page */
+    .film-strip-v.left  { box-shadow:  6px 0 24px rgba(0,0,0,0.22); }
+    .film-strip-v.right { box-shadow: -6px 0 24px rgba(0,0,0,0.22); }
+
+    /* Wrapper */
     .page-wrap {
       position: relative;
-      min-height: 100vh;
+      overflow: hidden;
     }
 
     /* ── NAV ── */
@@ -506,15 +445,10 @@
   <div class="page-wrap">
 
     <!-- ── LEFT FILM STRIP ── -->
-    <div class="film-strip-v left" id="strip-left">
-      <div class="sprockets" id="sprockets-left"></div>
-    </div>
+    <div class="film-strip-v left" id="strip-left"></div>
 
     <!-- ── RIGHT FILM STRIP ── -->
-    <div class="film-strip-v right" id="strip-right">
-      <div class="right-edge-line"></div>
-      <div class="sprockets" id="sprockets-right"></div>
-    </div>
+    <div class="film-strip-v right" id="strip-right"></div>
 
     <!-- NAV -->
     <nav id="nav">
@@ -684,9 +618,9 @@
         <div class="reveal">
           <h2 class="contact-heading">Lavoriamo<br><em>insieme?</em></h2>
           <div class="contact-links">
-            <a href="mailto:enrique.cappellini@gmail.com" class="contact-link">
+            <a href="/cdn-cgi/l/email-protection#bfdad1cdd6cecada91dcdecfcfdad3d3d6d1d6ffd8d2ded6d391dcd0d2" class="contact-link">
               <span class="cl-label">Email</span>
-              <span class="cl-value">enrique.cappellini@gmail.com</span>
+              <span class="cl-value"><span class="__cf_email__" data-cfemail="31545f43584044541f52504141545d5d585f5871565c50585d1f525e5c">[email&#160;protected]</span></span>
             </a>
             <a href="https://www.instagram.com/enrique.cappellini/" target="_blank" class="contact-link">
               <span class="cl-label">Instagram</span>
@@ -710,30 +644,13 @@
 
   </div><!-- /page-wrap -->
 
-  <script>
-    // ── Generate sprocket holes to fill the full page height ──
-    function fillSprockets(id) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      // fill generously — more than enough for any page
-      const count = Math.ceil(document.body.scrollHeight / 32) + 40;
-      el.innerHTML = '';
-      for (let i = 0; i < count; i++) {
-        const s = document.createElement('div');
-        s.className = 'sprocket';
-        el.appendChild(s);
-      }
-    }
-
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // ── Size film strips to full document height ──
     function initStrips() {
-      // Make strips as tall as the full document
       const h = document.documentElement.scrollHeight;
       document.getElementById('strip-left').style.height  = h + 'px';
       document.getElementById('strip-right').style.height = h + 'px';
-      fillSprockets('sprockets-left');
-      fillSprockets('sprockets-right');
     }
-
     window.addEventListener('load', initStrips);
     window.addEventListener('resize', initStrips);
 
@@ -765,13 +682,4 @@
     // ── Reveal on scroll ──
     const io = new IntersectionObserver(entries => {
       entries.forEach((e, i) => {
-        if (e.isIntersecting) {
-          setTimeout(() => e.target.classList.add('visible'), i * 90);
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-  </script>
-</body>
-</html>
+        if (e.isIntersect

@@ -353,14 +353,17 @@
       overflow: hidden;
       cursor: none;
       background: var(--ink2);
+      display: block;
+      text-decoration: none;
+      color: inherit;
     }
 
     /* Layout: big left, stacked right */
-    .project-card:nth-child(1) { grid-column: 1 / 8;  grid-row: 1 / 3; aspect-ratio: unset; min-height: 560px; }
-    .project-card:nth-child(2) { grid-column: 8 / 13; grid-row: 1 / 2; }
-    .project-card:nth-child(3) { grid-column: 8 / 13; grid-row: 2 / 3; }
-    .project-card:nth-child(4) { grid-column: 1 / 6;  grid-row: 3 / 4; min-height: 340px; }
-    .project-card:nth-child(5) { grid-column: 6 / 13; grid-row: 3 / 4; min-height: 340px; }
+    .projects-grid > *:nth-child(1) { grid-column: 1 / 8;  grid-row: 1 / 3; aspect-ratio: unset; min-height: 560px; }
+    .projects-grid > *:nth-child(2) { grid-column: 8 / 13; grid-row: 1 / 2; }
+    .projects-grid > *:nth-child(3) { grid-column: 8 / 13; grid-row: 2 / 3; }
+    .projects-grid > *:nth-child(4) { grid-column: 1 / 6;  grid-row: 3 / 4; min-height: 340px; }
+    .projects-grid > *:nth-child(5) { grid-column: 6 / 13; grid-row: 3 / 4; min-height: 340px; }
 
     .project-card img {
       width: 100%; height: 100%;
@@ -535,6 +538,9 @@
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#work">Work</a></li>
+      <li><a href="modellazione-3d.html">3D</a></li>
+      <li><a href="fotografia.html">Fotografia</a></li>
+      <li><a href="ux-design.html">UX Design</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
@@ -596,9 +602,8 @@
       <div class="projects-grid reveal">
 
         <!-- Card 1 — grande sinistra -->
-        <div class="project-card">
+        <a href="fotografia.html" class="project-card">
           <span class="frame-num">01A ▸</span>
-          <!-- Per aggiungere la tua immagine: <img src="images/foto1.jpg" alt="..."> -->
           <div class="project-placeholder">
             <div class="ph-icon">📷</div>
             <div class="ph-label">Foto principale</div>
@@ -609,10 +614,10 @@
             <div class="proj-title">Titolo Progetto</div>
             <div class="proj-desc">Breve descrizione del lavoro fotografico.</div>
           </div>
-        </div>
+        </a>
 
         <!-- Card 2 -->
-        <div class="project-card">
+        <a href="modellazione-3d.html" class="project-card">
           <span class="frame-num">02A ▸</span>
           <div class="project-placeholder">
             <div class="ph-icon">🧊</div>
@@ -624,10 +629,10 @@
             <div class="proj-title">Modello 3D</div>
             <div class="proj-desc">Progetto universitario di modellazione.</div>
           </div>
-        </div>
+        </a>
 
         <!-- Card 3 -->
-        <div class="project-card">
+        <a href="fotografia.html" class="project-card">
           <span class="frame-num">03A ▸</span>
           <div class="project-placeholder">
             <div class="ph-icon">🖼</div>
@@ -639,10 +644,10 @@
             <div class="proj-title">Titolo Progetto</div>
             <div class="proj-desc">Breve descrizione.</div>
           </div>
-        </div>
+        </a>
 
         <!-- Card 4 -->
-        <div class="project-card">
+        <a href="ux-design.html" class="project-card">
           <span class="frame-num">04A ▸</span>
           <div class="project-placeholder">
             <div class="ph-icon">📐</div>
@@ -654,7 +659,7 @@
             <div class="proj-title">Interfaccia Digitale</div>
             <div class="proj-desc">Prototipo e design di un'applicazione.</div>
           </div>
-        </div>
+        </a>
 
         <!-- Card 5 -->
         <div class="project-card">
@@ -703,9 +708,9 @@
       <div class="reveal">
         <h2 class="contact-heading">Lavoriamo<br><em>insieme?</em></h2>
         <div class="contact-links">
-          <a href="mailto:enrique.cappellini@gmail.com" class="contact-link">
+          <a href="/cdn-cgi/l/email-protection#781d160a11090d1d561b1908081d1414111611381f15191114561b1715" class="contact-link">
             <span class="cl-label">Email</span>
-            <span class="cl-value">enrique.cappellini@gmail.com</span>
+            <span class="cl-value"><span class="__cf_email__" data-cfemail="ef8a819d869e9a8ac18c8e9f9f8a8383868186af88828e8683c18c8082">[email&#160;protected]</span></span>
           </a>
           <a href="https://www.instagram.com/enrique.cappellini/" target="_blank" class="contact-link">
             <span class="cl-label">Instagram</span>
@@ -727,7 +732,7 @@
 
   </main>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // ── Film holes generation ──
     function makeHoles(id, count) {
       const el = document.getElementById(id);
@@ -772,13 +777,4 @@
     // ── Reveal on scroll ──
     const io = new IntersectionObserver(entries => {
       entries.forEach((e,i) => {
-        if (e.isIntersecting) {
-          setTimeout(() => e.target.classList.add('visible'), i * 90);
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-  </script>
-</body>
-</html>
+        if (e.isIntersect

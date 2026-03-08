@@ -679,27 +679,27 @@
       </div>
 
       <div class="categories-row reveal">
-        <div class="cat-item">
+        <a href="fotografia.html" class="cat-item" style="text-decoration:none;color:inherit;">
           <div class="cat-num">01</div>
           <div>
             <div class="cat-title">Fotografia</div>
             <div class="cat-sub">Ritratto · Paesaggio · Reportage</div>
           </div>
-        </div>
-        <div class="cat-item">
+        </a>
+        <a href="modellazione-3d.html" class="cat-item" style="text-decoration:none;color:inherit;">
           <div class="cat-num">02</div>
           <div>
             <div class="cat-title">3D & Motion</div>
             <div class="cat-sub">Blender · Unity · Rendering</div>
           </div>
-        </div>
-        <div class="cat-item">
+        </a>
+        <a href="ux-design.html" class="cat-item" style="text-decoration:none;color:inherit;">
           <div class="cat-num">03</div>
           <div>
             <div class="cat-title">Design Digitale</div>
             <div class="cat-sub">Figma · UI/UX · Prototipazione</div>
           </div>
-        </div>
+        </a>
       </div>
     </section>
 
@@ -708,9 +708,9 @@
       <div class="reveal">
         <h2 class="contact-heading">Lavoriamo<br><em>insieme?</em></h2>
         <div class="contact-links">
-          <a href="/cdn-cgi/l/email-protection#781d160a11090d1d561b1908081d1414111611381f15191114561b1715" class="contact-link">
+          <a href="mailto:enrique.cappellini@gmail.com" class="contact-link">
             <span class="cl-label">Email</span>
-            <span class="cl-value"><span class="__cf_email__" data-cfemail="ef8a819d869e9a8ac18c8e9f9f8a8383868186af88828e8683c18c8082">[email&#160;protected]</span></span>
+            <span class="cl-value">enrique.cappellini@gmail.com</span>
           </a>
           <a href="https://www.instagram.com/enrique.cappellini/" target="_blank" class="contact-link">
             <span class="cl-label">Instagram</span>
@@ -732,7 +732,7 @@
 
   </main>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     // ── Film holes generation ──
     function makeHoles(id, count) {
       const el = document.getElementById(id);
@@ -777,4 +777,13 @@
     // ── Reveal on scroll ──
     const io = new IntersectionObserver(entries => {
       entries.forEach((e,i) => {
-        if (e.isIntersect
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 90);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>

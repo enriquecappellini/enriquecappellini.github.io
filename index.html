@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enrique Cappellini — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:   #f5f0e8;
+      --paper:   #ede7d9;
+      --warm:    #d9cfc0;
+      --ink:     #1a1612;
+      --ink2:    #3d3530;
+      --muted:   #8c7f72;
+      --orange:  #c84b00;
+      --hole:    #1a1612;
+      --hole-w:  22px;
+      --strip-h: 48px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.75;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CURSOR ── */
+    #cur {
+      width: 10px; height: 10px;
+      background: var(--orange);
+      border-radius: 50%;
+      position: fixed; top:0; left:0;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: multiply;
+      transition: transform .1s;
+    }
+    #cur-ring {
+      width: 30px; height: 30px;
+      border: 1px solid var(--orange);
+      border-radius: 50%;
+      position: fixed; top:0; left:0;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: .4;
+    }
+
+    /* ── FILM STRIP BORDER (top + bottom repeated) ── */
+    .film-strip {
+      position: fixed;
+      left: 0; right: 0;
+      height: var(--strip-h);
+      background: var(--hole);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .film-strip.top    { top: 0; }
+    .film-strip.bottom { bottom: 0; }
+
+    .film-holes {
+      display: flex;
+      gap: 18px;
+      padding: 0 12px;
+      white-space: nowrap;
+      animation: slideHoles 8s linear infinite;
+    }
+    .film-strip.bottom .film-holes { animation-direction: reverse; }
+
+    @keyframes slideHoles {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-300px); }
+    }
+
+    .hole {
+      width: var(--hole-w);
+      height: 16px;
+      background: var(--cream);
+      border-radius: 3px;
+      flex-shrink: 0;
+      opacity: .85;
+    }
+
+    /* Vertical film edges */
+    .film-edge {
+      position: fixed;
+      top: var(--strip-h);
+      bottom: var(--strip-h);
+      width: var(--strip-h);
+      background: var(--hole);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 12px 0;
+      overflow: hidden;
+    }
+    .film-edge.left  { left: 0; }
+    .film-edge.right { right: 0; }
+
+    .film-edge-holes {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      animation: slideVHoles 10s linear infinite;
+    }
+    .film-edge.right .film-edge-holes { animation-direction: reverse; }
+
+    @keyframes slideVHoles {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-300px); }
+    }
+
+    .vhole {
+      width: 16px; height: var(--hole-w);
+      background: var(--cream);
+      border-radius: 3px;
+      flex-shrink: 0;
+      opacity: .85;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: var(--strip-h);
+      left: var(--strip-h);
+      right: var(--strip-h);
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      transition: background .3s, border-color .3s;
+    }
+    nav.scrolled {
+      background: rgba(245,240,232,.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--warm);
+    }
+    .nav-logo {
+      font-family: 'Courier Prime', monospace;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--orange); }
+
+    /* ── HERO PARALLAX ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      margin: var(--strip-h) var(--strip-h) 0;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: -15%;
+      background-image: url('hero.jpg');
+      background-size: cover;
+      background-position: center top;
+      will-change: transform;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(245,240,232,.08) 0%,
+        rgba(245,240,232,.15) 50%,
+        rgba(245,240,232,.85) 100%
+      );
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 72px;
+      left: 52px;
+      right: 52px;
+    }
+
+    .hero-tag {
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 18px;
+      opacity: 0;
+      animation: fadeUp .8s ease .3s forwards;
+    }
+
+    .hero-name {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(52px, 8vw, 110px);
+      font-weight: 400;
+      line-height: .92;
+      letter-spacing: -.01em;
+      color: var(--ink);
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp .8s ease .5s forwards;
+    }
+    .hero-name em { font-style: italic; color: var(--orange); }
+
+    .hero-sub {
+      font-size: 12px;
+      color: var(--ink2);
+      max-width: 440px;
+      line-height: 1.9;
+      opacity: 0;
+      animation: fadeUp .8s ease .7s forwards;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      right: 52px;
+      bottom: 80px;
+      font-size: 10px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeIn 1s ease 1.2s forwards;
+    }
+    .hero-scroll::after {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--muted);
+      animation: scrollPulse 2s ease infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:.3}50%{opacity:1} }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+    /* ── MAIN CONTENT AREA ── */
+    main {
+      margin: 0 var(--strip-h) var(--strip-h);
+    }
+
+    /* ── SECTION SHARED ── */
+    .section {
+      padding: 100px 52px;
+      border-top: 1px solid var(--warm);
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 52px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-label::before {
+      content: '';
+      width: 32px; height: 1px;
+      background: var(--orange);
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .about-heading {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(38px, 4.5vw, 64px);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-top: 12px;
+    }
+    .about-heading em { font-style: italic; color: var(--orange); }
+
+    .about-bio {
+      color: var(--ink2);
+      font-size: 13px;
+      line-height: 2;
+      margin-bottom: 44px;
+    }
+    .about-bio strong { color: var(--ink); font-weight: 700; }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--warm);
+      border: 1px solid var(--warm);
+    }
+    .skill-item {
+      background: var(--cream);
+      padding: 18px 22px;
+      transition: background .2s;
+    }
+    .skill-item:hover { background: var(--paper); }
+    .skill-name { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+    .skill-level { font-size: 10px; color: var(--muted); }
+
+    /* ── WORK ── */
+    #work { }
+
+    .work-heading {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(38px, 4.5vw, 64px);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 56px;
+    }
+    .work-heading em { font-style: italic; color: var(--orange); }
+
+    /* Full-bleed image grid with film-frame feel */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 3px;
+      background: var(--ink);
+    }
+
+    .project-card {
+      position: relative;
+      overflow: hidden;
+      cursor: none;
+      background: var(--ink2);
+    }
+
+    /* Layout: big left, stacked right */
+    .project-card:nth-child(1) { grid-column: 1 / 8;  grid-row: 1 / 3; aspect-ratio: unset; min-height: 560px; }
+    .project-card:nth-child(2) { grid-column: 8 / 13; grid-row: 1 / 2; }
+    .project-card:nth-child(3) { grid-column: 8 / 13; grid-row: 2 / 3; }
+    .project-card:nth-child(4) { grid-column: 1 / 6;  grid-row: 3 / 4; min-height: 340px; }
+    .project-card:nth-child(5) { grid-column: 6 / 13; grid-row: 3 / 4; min-height: 340px; }
+
+    .project-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .7s ease, filter .4s ease;
+      filter: saturate(90%);
+    }
+    .project-card:hover img { transform: scale(1.04); filter: saturate(110%); }
+
+    .project-placeholder {
+      width: 100%; height: 100%;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: var(--paper);
+      transition: background .3s;
+    }
+    .project-card:hover .project-placeholder { background: var(--warm); }
+    .ph-icon { font-size: 26px; opacity: .3; }
+    .ph-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+    .ph-code  { font-size: 10px; color: var(--warm); font-family: 'Courier Prime', monospace; margin-top: 6px; }
+
+    .project-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,22,18,.9) 0%, transparent 55%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 30px;
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+    .project-card:hover .project-overlay { opacity: 1; }
+    .proj-cat   { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
+    .proj-title { font-family: 'IM Fell English', serif; font-size: 24px; color: var(--cream); margin-bottom: 6px; }
+    .proj-desc  { font-size: 11px; color: rgba(245,240,232,.55); line-height: 1.65; }
+
+    /* Frame number decoration */
+    .frame-num {
+      position: absolute;
+      top: 12px; left: 14px;
+      font-size: 10px;
+      letter-spacing: .1em;
+      color: rgba(245,240,232,.3);
+      font-family: 'Courier Prime', monospace;
+      pointer-events: none;
+    }
+
+    /* ── CATEGORIES ── */
+    .categories-row {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1px;
+      background: var(--warm);
+      border: 1px solid var(--warm);
+      margin-top: 40px;
+    }
+    .cat-item {
+      background: var(--cream);
+      padding: 32px 36px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      transition: background .2s;
+    }
+    .cat-item:hover { background: var(--paper); }
+    .cat-num {
+      font-family: 'IM Fell English', serif;
+      font-size: 50px;
+      font-weight: 400;
+      color: var(--warm);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .cat-title { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+    .cat-sub   { font-size: 10px; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    #contact {
+      min-height: 55vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .contact-heading {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -.01em;
+      margin-bottom: 52px;
+    }
+    .contact-heading em { font-style: italic; color: var(--orange); }
+
+    .contact-links { display: flex; gap: 48px; flex-wrap: wrap; }
+    .contact-link { display: flex; flex-direction: column; gap: 6px; text-decoration: none; }
+    .cl-label { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+    .cl-value {
+      font-size: 13px;
+      color: var(--ink);
+      border-bottom: 1px solid var(--warm);
+      padding-bottom: 7px;
+      transition: color .2s, border-color .2s;
+    }
+    .contact-link:hover .cl-value { color: var(--orange); border-color: var(--orange); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--warm);
+      padding: 28px 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      letter-spacing: .1em;
+      color: var(--muted);
+    }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .75s ease, transform .75s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      :root { --strip-h: 36px; --hole-w: 16px; }
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero-content { left: 24px; right: 24px; bottom: 52px; }
+      .section { padding: 72px 28px; }
+      #about { grid-template-columns: 1fr; gap: 36px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card:nth-child(n) { grid-column: auto; grid-row: auto; min-height: 280px; }
+      .categories-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 10px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cur"></div>
+  <div id="cur-ring"></div>
+
+  <!-- Film strip top -->
+  <div class="film-strip top">
+    <div class="film-holes" id="holes-top"></div>
+  </div>
+
+  <!-- Film strip bottom -->
+  <div class="film-strip bottom">
+    <div class="film-holes" id="holes-bottom"></div>
+  </div>
+
+  <!-- Film edge left -->
+  <div class="film-edge left">
+    <div class="film-edge-holes" id="vholes-left"></div>
+  </div>
+
+  <!-- Film edge right -->
+  <div class="film-edge right">
+    <div class="film-edge-holes" id="vholes-right"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">EC</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-tag">Portfolio — 2025</p>
+      <h1 class="hero-name">Enrique<br><em>Cappellini</em></h1>
+      <p class="hero-sub">Ingegneria del Cinema e dei Media Digitali · Politecnico di Torino<br>Fotografia · 3D · Design digitale</p>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div>
+        <div class="section-label">About</div>
+        <h2 class="about-heading reveal">
+          Immagini,<br><em>spazio</em><br>e codice.
+        </h2>
+      </div>
+      <div class="reveal" style="transition-delay:.12s">
+        <p class="about-bio">
+          Ho <strong>24 anni</strong> e studio <strong>Ingegneria del Cinema e dei Media Digitali</strong> al Politecnico di Torino. La mia pratica si muove tra la fotografia, la modellazione 3D con <strong>Blender</strong> e la prototipazione di interfacce con <strong>Figma</strong>.<br><br>
+          Ho esperienza con <strong>Unity</strong> per ambienti interattivi e una curiosità costante per il confine tra tecnica e visione artistica.
+        </p>
+        <div class="skills-grid">
+          <div class="skill-item">
+            <div class="skill-name">Fotografia</div>
+            <div class="skill-level">Composizione · Luce · Post-prod</div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-name">Blender</div>
+            <div class="skill-level">Modellazione 3D · Rendering</div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-name">Figma</div>
+            <div class="skill-level">UI/UX · Prototipazione</div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-name">Unity</div>
+            <div class="skill-level">Ambienti interattivi</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK -->
+    <section class="section" id="work">
+      <div class="section-label reveal">Work</div>
+      <h2 class="work-heading reveal">Progetti<br><em>selezionati</em></h2>
+
+      <div class="projects-grid reveal">
+
+        <!-- Card 1 — grande sinistra -->
+        <div class="project-card">
+          <span class="frame-num">01A ▸</span>
+          <!-- Per aggiungere la tua immagine: <img src="images/foto1.jpg" alt="..."> -->
+          <div class="project-placeholder">
+            <div class="ph-icon">📷</div>
+            <div class="ph-label">Foto principale</div>
+            <div class="ph-code">&lt;img src="images/foto1.jpg"&gt;</div>
+          </div>
+          <div class="project-overlay">
+            <div class="proj-cat">Fotografia</div>
+            <div class="proj-title">Titolo Progetto</div>
+            <div class="proj-desc">Breve descrizione del lavoro fotografico.</div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="project-card">
+          <span class="frame-num">02A ▸</span>
+          <div class="project-placeholder">
+            <div class="ph-icon">🧊</div>
+            <div class="ph-label">Render Blender</div>
+            <div class="ph-code">&lt;img src="images/render1.jpg"&gt;</div>
+          </div>
+          <div class="project-overlay">
+            <div class="proj-cat">3D — Blender</div>
+            <div class="proj-title">Modello 3D</div>
+            <div class="proj-desc">Progetto universitario di modellazione.</div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="project-card">
+          <span class="frame-num">03A ▸</span>
+          <div class="project-placeholder">
+            <div class="ph-icon">🖼</div>
+            <div class="ph-label">Foto / progetto</div>
+            <div class="ph-code">&lt;img src="images/foto2.jpg"&gt;</div>
+          </div>
+          <div class="project-overlay">
+            <div class="proj-cat">Fotografia</div>
+            <div class="proj-title">Titolo Progetto</div>
+            <div class="proj-desc">Breve descrizione.</div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="project-card">
+          <span class="frame-num">04A ▸</span>
+          <div class="project-placeholder">
+            <div class="ph-icon">📐</div>
+            <div class="ph-label">UI / Figma</div>
+            <div class="ph-code">&lt;img src="images/figma1.jpg"&gt;</div>
+          </div>
+          <div class="project-overlay">
+            <div class="proj-cat">UI/UX — Figma</div>
+            <div class="proj-title">Interfaccia Digitale</div>
+            <div class="proj-desc">Prototipo e design di un'applicazione.</div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="project-card">
+          <span class="frame-num">05A ▸</span>
+          <div class="project-placeholder">
+            <div class="ph-icon">🎬</div>
+            <div class="ph-label">Video / altro</div>
+            <div class="ph-code">&lt;img src="images/proj5.jpg"&gt;</div>
+          </div>
+          <div class="project-overlay">
+            <div class="proj-cat">Cinema / Motion</div>
+            <div class="proj-title">Titolo Progetto</div>
+            <div class="proj-desc">Breve descrizione del progetto.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="categories-row reveal">
+        <div class="cat-item">
+          <div class="cat-num">01</div>
+          <div>
+            <div class="cat-title">Fotografia</div>
+            <div class="cat-sub">Ritratto · Paesaggio · Reportage</div>
+          </div>
+        </div>
+        <div class="cat-item">
+          <div class="cat-num">02</div>
+          <div>
+            <div class="cat-title">3D & Motion</div>
+            <div class="cat-sub">Blender · Unity · Rendering</div>
+          </div>
+        </div>
+        <div class="cat-item">
+          <div class="cat-num">03</div>
+          <div>
+            <div class="cat-title">Design Digitale</div>
+            <div class="cat-sub">Figma · UI/UX · Prototipazione</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <div class="reveal">
+        <h2 class="contact-heading">Lavoriamo<br><em>insieme?</em></h2>
+        <div class="contact-links">
+          <a href="mailto:enrique.cappellini@gmail.com" class="contact-link">
+            <span class="cl-label">Email</span>
+            <span class="cl-value">enrique.cappellini@gmail.com</span>
+          </a>
+          <a href="https://www.instagram.com/enrique.cappellini/" target="_blank" class="contact-link">
+            <span class="cl-label">Instagram</span>
+            <span class="cl-value">@enrique.cappellini</span>
+          </a>
+          <a href="https://www.linkedin.com/in/enriquecappellini" target="_blank" class="contact-link">
+            <span class="cl-label">LinkedIn</span>
+            <span class="cl-value">enriquecappellini</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2025 Enrique Cappellini</span>
+      <span>Torino, Italia</span>
+      <span>enriquecappellini.github.io</span>
+    </footer>
+
+  </main>
+
+  <script>
+    // ── Film holes generation ──
+    function makeHoles(id, count) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      for (let i = 0; i < count; i++) {
+        const h = document.createElement('div');
+        h.className = el.classList.contains('film-edge-holes') ? 'vhole' : 'hole';
+        el.appendChild(h);
+      }
+    }
+    makeHoles('holes-top', 60);
+    makeHoles('holes-bottom', 60);
+    makeHoles('vholes-left', 80);
+    makeHoles('vholes-right', 80);
+
+    // ── Custom cursor ──
+    const cur = document.getElementById('cur');
+    const ring = document.getElementById('cur-ring');
+    let mx=0, my=0, rx=0, ry=0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cur.style.transform = `translate(${mx-5}px,${my-5}px)`;
+    });
+    (function animRing(){
+      rx += (mx-rx-15)*0.1;
+      ry += (my-ry-15)*0.1;
+      ring.style.transform = `translate(${rx}px,${ry}px)`;
+      requestAnimationFrame(animRing);
+    })();
+
+    // ── Nav scroll ──
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
+
+    // ── Parallax hero ──
+    const heroBg = document.getElementById('heroBg');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      heroBg.style.transform = `translateY(${y * 0.45}px)`;
+    }, { passive: true });
+
+    // ── Reveal on scroll ──
+    const io = new IntersectionObserver(entries => {
+      entries.forEach((e,i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 90);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>

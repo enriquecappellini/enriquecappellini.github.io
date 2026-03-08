@@ -618,9 +618,9 @@
         <div class="reveal">
           <h2 class="contact-heading">Lavoriamo<br><em>insieme?</em></h2>
           <div class="contact-links">
-            <a href="/cdn-cgi/l/email-protection#bfdad1cdd6cecada91dcdecfcfdad3d3d6d1d6ffd8d2ded6d391dcd0d2" class="contact-link">
+            <a href="mailto:enrique.cappellini@gmail.com" class="contact-link">
               <span class="cl-label">Email</span>
-              <span class="cl-value"><span class="__cf_email__" data-cfemail="31545f43584044541f52504141545d5d585f5871565c50585d1f525e5c">[email&#160;protected]</span></span>
+              <span class="cl-value">enrique.cappellini@gmail.com</span>
             </a>
             <a href="https://www.instagram.com/enrique.cappellini/" target="_blank" class="contact-link">
               <span class="cl-label">Instagram</span>
@@ -644,7 +644,7 @@
 
   </div><!-- /page-wrap -->
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     // ── Size film strips to full document height ──
     function initStrips() {
       const h = document.documentElement.scrollHeight;
@@ -682,4 +682,13 @@
     // ── Reveal on scroll ──
     const io = new IntersectionObserver(entries => {
       entries.forEach((e, i) => {
-        if (e.isIntersect
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 90);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>

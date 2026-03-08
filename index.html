@@ -15,12 +15,12 @@
       --ink2:    #3d3530;
       --muted:   #8c7f72;
       --orange:  #c84b00;
-      --hole:    #1a1612;
-      --hole-w:  22px;
-      --strip-h: 48px;
+      --strip-w: 52px; /* width of each vertical film strip */
     }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+
     body {
       background: var(--cream);
       color: var(--ink);
@@ -30,6 +30,8 @@
       overflow-x: hidden;
       cursor: none;
     }
+
+    /* ── CURSOR ── */
     #cur {
       width: 10px; height: 10px;
       background: var(--orange);
@@ -49,77 +51,109 @@
       z-index: 9998;
       opacity: .4;
     }
-    .film-strip {
-      position: fixed;
-      left: 0; right: 0;
-      height: var(--strip-h);
-      background: var(--hole);
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
+
+    /* ══════════════════════════════════════
+       VERTICAL FILM STRIPS — scroll with page
+    ══════════════════════════════════════ */
+    .film-strip-v {
+      position: absolute;
+      top: 0;
+      width: var(--strip-w);
+      /* tall enough to cover any page length */
+      min-height: 100%;
+      background: #0f0e0d;
+      z-index: 50;
+      pointer-events: none;
     }
-    .film-strip.top    { top: 0; }
-    .film-strip.bottom { bottom: 0; }
-    .film-holes {
-      display: flex;
-      gap: 18px;
-      padding: 0 12px;
-      white-space: nowrap;
-      animation: slideHoles 8s linear infinite;
-    }
-    .film-strip.bottom .film-holes { animation-direction: reverse; }
-    @keyframes slideHoles {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-300px); }
-    }
-    .hole {
-      width: var(--hole-w);
-      height: 16px;
-      background: var(--cream);
-      border-radius: 3px;
-      flex-shrink: 0;
-      opacity: .85;
-    }
-    .film-edge {
-      position: fixed;
-      top: var(--strip-h);
-      bottom: var(--strip-h);
-      width: var(--strip-h);
-      background: var(--hole);
-      z-index: 200;
+    .film-strip-v.left  { left: 0; }
+    .film-strip-v.right { right: 0; }
+
+    /* sprocket holes column */
+    .sprockets {
+      position: absolute;
+      top: 0;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      padding: 12px 0;
-      overflow: hidden;
+      padding: 20px 0;
+      gap: 14px;
     }
-    .film-edge.left  { left: 0; }
-    .film-edge.right { right: 0; }
-    .film-edge-holes {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      animation: slideVHoles 10s linear infinite;
-    }
-    .film-edge.right .film-edge-holes { animation-direction: reverse; }
-    @keyframes slideVHoles {
-      from { transform: translateY(0); }
-      to   { transform: translateY(-300px); }
-    }
-    .vhole {
-      width: 16px; height: var(--hole-w);
-      background: var(--cream);
+
+    .sprocket {
+      width: 26px;
+      height: 18px;
       border-radius: 3px;
+      background: transparent;
+      border: 2px solid rgba(245,240,232,0.18);
       flex-shrink: 0;
-      opacity: .85;
     }
+
+    /* thin edge line (like the film border) */
+    .film-strip-v.left::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 1px; height: 100%;
+      background: rgba(245,240,232,0.06);
+    }
+    .film-strip-v.right::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 1px; height: 100%;
+      background: rgba(245,240,232,0.06);
+    }
+
+    /* Subtle blue-teal tint like the Rollei negative */
+    .film-strip-v::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(30,50,80,0.18) 0%,
+        rgba(10,20,40,0.08) 40%,
+        rgba(30,50,80,0.15) 70%,
+        rgba(10,20,40,0.06) 100%
+      );
+      pointer-events: none;
+    }
+    /* override the ::before for the right strip border */
+    .film-strip-v.right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(30,50,80,0.18) 0%,
+        rgba(10,20,40,0.08) 40%,
+        rgba(30,50,80,0.15) 70%,
+        rgba(10,20,40,0.06) 100%
+      );
+      width: 100%;
+      height: 100%;
+    }
+    /* edge line for right strip (re-add since ::before is taken) */
+    .right-edge-line {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1px; height: 100%;
+      background: rgba(245,240,232,0.06);
+    }
+
+    /* Wrapper: positions film strips as siblings to content */
+    .page-wrap {
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
     nav {
       position: fixed;
-      top: var(--strip-h);
-      left: var(--strip-h);
-      right: var(--strip-h);
+      top: 0;
+      left: var(--strip-w);
+      right: var(--strip-w);
       z-index: 100;
       display: flex;
       justify-content: space-between;
@@ -128,7 +162,7 @@
       transition: background .3s, border-color .3s;
     }
     nav.scrolled {
-      background: rgba(245,240,232,.92);
+      background: rgba(245,240,232,.94);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--warm);
     }
@@ -150,10 +184,12 @@
       transition: color .2s;
     }
     .nav-links a:hover { color: var(--orange); }
+
+    /* ── HERO ── */
     .hero {
       position: relative;
       height: 100vh;
-      margin: var(--strip-h) var(--strip-h) 0;
+      margin: 0 var(--strip-w);
       overflow: hidden;
     }
     .hero-bg {
@@ -177,8 +213,7 @@
     .hero-content {
       position: absolute;
       bottom: 72px;
-      left: 52px;
-      right: 52px;
+      left: 52px; right: 52px;
     }
     .hero-tag {
       font-size: 10px;
@@ -211,8 +246,7 @@
     }
     .hero-scroll {
       position: absolute;
-      right: 52px;
-      bottom: 80px;
+      right: 52px; bottom: 80px;
       font-size: 10px;
       letter-spacing: .18em;
       text-transform: uppercase;
@@ -232,7 +266,10 @@
     @keyframes scrollPulse { 0%,100%{opacity:.3}50%{opacity:1} }
     @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-    main { margin: 0 var(--strip-h) var(--strip-h); }
+
+    /* ── MAIN ── */
+    main { margin: 0 var(--strip-w); }
+
     .section {
       padding: 100px 52px;
       border-top: 1px solid var(--warm);
@@ -252,6 +289,8 @@
       width: 32px; height: 1px;
       background: var(--orange);
     }
+
+    /* ── ABOUT ── */
     #about {
       display: grid;
       grid-template-columns: 1fr 1.1fr;
@@ -288,6 +327,8 @@
     .skill-item:hover { background: var(--paper); }
     .skill-name { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
     .skill-level { font-size: 10px; color: var(--muted); }
+
+    /* ── WORK ── */
     .work-heading {
       font-family: 'IM Fell English', serif;
       font-size: clamp(38px, 4.5vw, 64px);
@@ -296,14 +337,13 @@
       margin-bottom: 56px;
     }
     .work-heading em { font-style: italic; color: var(--orange); }
+
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: auto;
       gap: 3px;
       background: var(--ink);
     }
-    /* card può essere sia <div> che <a> */
     .project-card {
       position: relative;
       overflow: hidden;
@@ -338,7 +378,7 @@
       transition: background .3s;
     }
     .project-card:hover .project-placeholder { background: var(--warm); }
-    .ph-icon { font-size: 26px; opacity: .3; }
+    .ph-icon  { font-size: 26px; opacity: .3; }
     .ph-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
     .ph-code  { font-size: 10px; color: var(--warm); font-family: 'Courier Prime', monospace; margin-top: 6px; }
     .project-overlay {
@@ -365,6 +405,8 @@
       font-family: 'Courier Prime', monospace;
       pointer-events: none;
     }
+
+    /* ── CATEGORIES ── */
     .categories-row {
       display: grid;
       grid-template-columns: repeat(3,1fr);
@@ -395,6 +437,8 @@
     }
     .cat-title { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
     .cat-sub   { font-size: 10px; color: var(--muted); }
+
+    /* ── CONTACT ── */
     #contact {
       min-height: 55vh;
       display: flex;
@@ -421,6 +465,8 @@
       transition: color .2s, border-color .2s;
     }
     .contact-link:hover .cl-value { color: var(--orange); border-color: var(--orange); }
+
+    /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--warm);
       padding: 28px 52px;
@@ -431,11 +477,15 @@
       letter-spacing: .1em;
       color: var(--muted);
     }
+
+    /* ── REVEAL ── */
     .reveal { opacity: 0; transform: translateY(24px); transition: opacity .75s ease, transform .75s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      :root { --strip-h: 36px; --hole-w: 16px; }
-      nav { padding: 16px 24px; }
+      :root { --strip-w: 32px; }
+      nav { padding: 16px 20px; }
       .nav-links { display: none; }
       .hero-content { left: 24px; right: 24px; bottom: 52px; }
       .section { padding: 72px 28px; }
@@ -444,229 +494,251 @@
       .projects-grid > *:nth-child(n) { grid-column: auto; grid-row: auto; min-height: 280px; }
       .categories-row { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 10px; text-align: center; }
+      .sprocket { width: 18px; height: 13px; }
     }
   </style>
 </head>
 <body>
+
   <div id="cur"></div>
   <div id="cur-ring"></div>
 
-  <div class="film-strip top">
-    <div class="film-holes" id="holes-top"></div>
-  </div>
-  <div class="film-strip bottom">
-    <div class="film-holes" id="holes-bottom"></div>
-  </div>
-  <div class="film-edge left">
-    <div class="film-edge-holes" id="vholes-left"></div>
-  </div>
-  <div class="film-edge right">
-    <div class="film-edge-holes" id="vholes-right"></div>
-  </div>
+  <div class="page-wrap">
 
-  <nav id="nav">
-    <a href="#" class="nav-logo">EC</a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#work">Work</a></li>
-      <li><a href="modellazione-3d.html">3D</a></li>
-      <li><a href="fotografia.html">Fotografia</a></li>
-      <li><a href="ux-design.html">UX Design</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <div class="hero">
-    <div class="hero-bg" id="heroBg"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <p class="hero-tag">Portfolio — 2025</p>
-      <h1 class="hero-name">Enrique<br><em>Cappellini</em></h1>
-      <p class="hero-sub">Ingegneria del Cinema e dei Media Digitali · Politecnico di Torino<br>Fotografia · 3D · Design digitale</p>
+    <!-- ── LEFT FILM STRIP ── -->
+    <div class="film-strip-v left" id="strip-left">
+      <div class="sprockets" id="sprockets-left"></div>
     </div>
-    <div class="hero-scroll">Scroll</div>
-  </div>
 
-  <main>
-    <section class="section" id="about">
-      <div>
-        <div class="section-label">About</div>
-        <h2 class="about-heading reveal">
-          Immagini,<br><em>spazio</em><br>e codice.
-        </h2>
+    <!-- ── RIGHT FILM STRIP ── -->
+    <div class="film-strip-v right" id="strip-right">
+      <div class="right-edge-line"></div>
+      <div class="sprockets" id="sprockets-right"></div>
+    </div>
+
+    <!-- NAV -->
+    <nav id="nav">
+      <a href="#" class="nav-logo">EC</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="modellazione-3d.html">3D</a></li>
+        <li><a href="fotografia.html">Fotografia</a></li>
+        <li><a href="ux-design.html">UX Design</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-bg" id="heroBg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <p class="hero-tag">Portfolio — 2025</p>
+        <h1 class="hero-name">Enrique<br><em>Cappellini</em></h1>
+        <p class="hero-sub">Ingegneria del Cinema e dei Media Digitali · Politecnico di Torino<br>Fotografia · 3D · Design digitale</p>
       </div>
-      <div class="reveal" style="transition-delay:.12s">
-        <p class="about-bio">
-          Ho <strong>24 anni</strong> e studio <strong>Ingegneria del Cinema e dei Media Digitali</strong> al Politecnico di Torino. La mia pratica si muove tra la fotografia, la modellazione 3D con <strong>Blender</strong> e la prototipazione di interfacce con <strong>Figma</strong>.<br><br>
-          Ho esperienza con <strong>Unity</strong> per ambienti interattivi e una curiosità costante per il confine tra tecnica e visione artistica.
-        </p>
-        <div class="skills-grid">
-          <div class="skill-item">
-            <div class="skill-name">Fotografia</div>
-            <div class="skill-level">Composizione · Luce · Post-prod</div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-name">Blender</div>
-            <div class="skill-level">Modellazione 3D · Rendering</div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-name">Figma</div>
-            <div class="skill-level">UI/UX · Prototipazione</div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-name">Unity</div>
-            <div class="skill-level">Ambienti interattivi</div>
+      <div class="hero-scroll">Scroll</div>
+    </div>
+
+    <!-- MAIN -->
+    <main>
+
+      <section class="section" id="about">
+        <div>
+          <div class="section-label">About</div>
+          <h2 class="about-heading reveal">
+            Immagini,<br><em>spazio</em><br>e codice.
+          </h2>
+        </div>
+        <div class="reveal" style="transition-delay:.12s">
+          <p class="about-bio">
+            Ho <strong>24 anni</strong> e studio <strong>Ingegneria del Cinema e dei Media Digitali</strong> al Politecnico di Torino. La mia pratica si muove tra la fotografia, la modellazione 3D con <strong>Blender</strong> e la prototipazione di interfacce con <strong>Figma</strong>.<br><br>
+            Ho esperienza con <strong>Unity</strong> per ambienti interattivi e una curiosità costante per il confine tra tecnica e visione artistica.
+          </p>
+          <div class="skills-grid">
+            <div class="skill-item">
+              <div class="skill-name">Fotografia</div>
+              <div class="skill-level">Composizione · Luce · Post-prod</div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">Blender</div>
+              <div class="skill-level">Modellazione 3D · Rendering</div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">Figma</div>
+              <div class="skill-level">UI/UX · Prototipazione</div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">Unity</div>
+              <div class="skill-level">Ambienti interattivi</div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section" id="work">
-      <div class="section-label reveal">Work</div>
-      <h2 class="work-heading reveal">Progetti<br><em>selezionati</em></h2>
+      <section class="section" id="work">
+        <div class="section-label reveal">Work</div>
+        <h2 class="work-heading reveal">Progetti<br><em>selezionati</em></h2>
 
-      <div class="projects-grid reveal">
+        <div class="projects-grid reveal">
 
-        <a href="fotografia.html" class="project-card">
-          <span class="frame-num">01A ▸</span>
-          <div class="project-placeholder">
-            <div class="ph-icon">📷</div>
-            <div class="ph-label">Foto principale</div>
-            <div class="ph-code">&lt;img src="images/foto1.jpg"&gt;</div>
-          </div>
-          <div class="project-overlay">
-            <div class="proj-cat">Fotografia</div>
-            <div class="proj-title">Titolo Progetto</div>
-            <div class="proj-desc">Breve descrizione del lavoro fotografico.</div>
-          </div>
-        </a>
+          <a href="fotografia.html" class="project-card">
+            <span class="frame-num">01A ▸</span>
+            <div class="project-placeholder">
+              <div class="ph-icon">📷</div>
+              <div class="ph-label">Foto principale</div>
+              <div class="ph-code">&lt;img src="images/foto1.jpg"&gt;</div>
+            </div>
+            <div class="project-overlay">
+              <div class="proj-cat">Fotografia</div>
+              <div class="proj-title">Titolo Progetto</div>
+              <div class="proj-desc">Breve descrizione del lavoro fotografico.</div>
+            </div>
+          </a>
 
-        <a href="modellazione-3d.html" class="project-card">
-          <span class="frame-num">02A ▸</span>
-          <div class="project-placeholder">
-            <div class="ph-icon">🧊</div>
-            <div class="ph-label">Render Blender</div>
-            <div class="ph-code">&lt;img src="images/render1.jpg"&gt;</div>
-          </div>
-          <div class="project-overlay">
-            <div class="proj-cat">3D — Blender</div>
-            <div class="proj-title">Modello 3D</div>
-            <div class="proj-desc">Progetto universitario di modellazione.</div>
-          </div>
-        </a>
+          <a href="modellazione-3d.html" class="project-card">
+            <span class="frame-num">02A ▸</span>
+            <div class="project-placeholder">
+              <div class="ph-icon">🧊</div>
+              <div class="ph-label">Render Blender</div>
+              <div class="ph-code">&lt;img src="images/render1.jpg"&gt;</div>
+            </div>
+            <div class="project-overlay">
+              <div class="proj-cat">3D — Blender</div>
+              <div class="proj-title">Modello 3D</div>
+              <div class="proj-desc">Progetto universitario di modellazione.</div>
+            </div>
+          </a>
 
-        <a href="fotografia.html" class="project-card">
-          <span class="frame-num">03A ▸</span>
-          <div class="project-placeholder">
-            <div class="ph-icon">🖼</div>
-            <div class="ph-label">Foto / progetto</div>
-            <div class="ph-code">&lt;img src="images/foto2.jpg"&gt;</div>
-          </div>
-          <div class="project-overlay">
-            <div class="proj-cat">Fotografia</div>
-            <div class="proj-title">Titolo Progetto</div>
-            <div class="proj-desc">Breve descrizione.</div>
-          </div>
-        </a>
+          <a href="fotografia.html" class="project-card">
+            <span class="frame-num">03A ▸</span>
+            <div class="project-placeholder">
+              <div class="ph-icon">🖼</div>
+              <div class="ph-label">Foto / progetto</div>
+              <div class="ph-code">&lt;img src="images/foto2.jpg"&gt;</div>
+            </div>
+            <div class="project-overlay">
+              <div class="proj-cat">Fotografia</div>
+              <div class="proj-title">Titolo Progetto</div>
+              <div class="proj-desc">Breve descrizione.</div>
+            </div>
+          </a>
 
-        <a href="ux-design.html" class="project-card">
-          <span class="frame-num">04A ▸</span>
-          <div class="project-placeholder">
-            <div class="ph-icon">📐</div>
-            <div class="ph-label">UI / Figma</div>
-            <div class="ph-code">&lt;img src="images/figma1.jpg"&gt;</div>
-          </div>
-          <div class="project-overlay">
-            <div class="proj-cat">UI/UX — Figma</div>
-            <div class="proj-title">Interfaccia Digitale</div>
-            <div class="proj-desc">Prototipo e design di un'applicazione.</div>
-          </div>
-        </a>
+          <a href="ux-design.html" class="project-card">
+            <span class="frame-num">04A ▸</span>
+            <div class="project-placeholder">
+              <div class="ph-icon">📐</div>
+              <div class="ph-label">UI / Figma</div>
+              <div class="ph-code">&lt;img src="images/figma1.jpg"&gt;</div>
+            </div>
+            <div class="project-overlay">
+              <div class="proj-cat">UI/UX — Figma</div>
+              <div class="proj-title">Interfaccia Digitale</div>
+              <div class="proj-desc">Prototipo e design di un'applicazione.</div>
+            </div>
+          </a>
 
-        <div class="project-card">
-          <span class="frame-num">05A ▸</span>
-          <div class="project-placeholder">
-            <div class="ph-icon">🎬</div>
-            <div class="ph-label">Video / altro</div>
-            <div class="ph-code">&lt;img src="images/proj5.jpg"&gt;</div>
+          <div class="project-card">
+            <span class="frame-num">05A ▸</span>
+            <div class="project-placeholder">
+              <div class="ph-icon">🎬</div>
+              <div class="ph-label">Video / altro</div>
+              <div class="ph-code">&lt;img src="images/proj5.jpg"&gt;</div>
+            </div>
+            <div class="project-overlay">
+              <div class="proj-cat">Cinema / Motion</div>
+              <div class="proj-title">Titolo Progetto</div>
+              <div class="proj-desc">Breve descrizione del progetto.</div>
+            </div>
           </div>
-          <div class="project-overlay">
-            <div class="proj-cat">Cinema / Motion</div>
-            <div class="proj-title">Titolo Progetto</div>
-            <div class="proj-desc">Breve descrizione del progetto.</div>
-          </div>
+
         </div>
 
-      </div>
-
-      <div class="categories-row reveal">
-        <a href="fotografia.html" class="cat-item">
-          <div class="cat-num">01</div>
-          <div>
-            <div class="cat-title">Fotografia</div>
-            <div class="cat-sub">Ritratto · Paesaggio · Reportage</div>
-          </div>
-        </a>
-        <a href="modellazione-3d.html" class="cat-item">
-          <div class="cat-num">02</div>
-          <div>
-            <div class="cat-title">3D & Motion</div>
-            <div class="cat-sub">Blender · Unity · Rendering</div>
-          </div>
-        </a>
-        <a href="ux-design.html" class="cat-item">
-          <div class="cat-num">03</div>
-          <div>
-            <div class="cat-title">Design Digitale</div>
-            <div class="cat-sub">Figma · UI/UX · Prototipazione</div>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <section class="section" id="contact">
-      <div class="reveal">
-        <h2 class="contact-heading">Lavoriamo<br><em>insieme?</em></h2>
-        <div class="contact-links">
-          <a href="mailto:enrique.cappellini@gmail.com" class="contact-link">
-            <span class="cl-label">Email</span>
-            <span class="cl-value">enrique.cappellini@gmail.com</span>
+        <div class="categories-row reveal">
+          <a href="fotografia.html" class="cat-item">
+            <div class="cat-num">01</div>
+            <div>
+              <div class="cat-title">Fotografia</div>
+              <div class="cat-sub">Ritratto · Paesaggio · Reportage</div>
+            </div>
           </a>
-          <a href="https://www.instagram.com/enrique.cappellini/" target="_blank" class="contact-link">
-            <span class="cl-label">Instagram</span>
-            <span class="cl-value">@enrique.cappellini</span>
+          <a href="modellazione-3d.html" class="cat-item">
+            <div class="cat-num">02</div>
+            <div>
+              <div class="cat-title">3D & Motion</div>
+              <div class="cat-sub">Blender · Unity · Rendering</div>
+            </div>
           </a>
-          <a href="https://www.linkedin.com/in/enriquecappellini" target="_blank" class="contact-link">
-            <span class="cl-label">LinkedIn</span>
-            <span class="cl-value">enriquecappellini</span>
+          <a href="ux-design.html" class="cat-item">
+            <div class="cat-num">03</div>
+            <div>
+              <div class="cat-title">Design Digitale</div>
+              <div class="cat-sub">Figma · UI/UX · Prototipazione</div>
+            </div>
           </a>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <footer>
-      <span>© 2025 Enrique Cappellini</span>
-      <span>Torino, Italia</span>
-      <span>enriquecappellini.github.io</span>
-    </footer>
-  </main>
+      <section class="section" id="contact">
+        <div class="reveal">
+          <h2 class="contact-heading">Lavoriamo<br><em>insieme?</em></h2>
+          <div class="contact-links">
+            <a href="mailto:enrique.cappellini@gmail.com" class="contact-link">
+              <span class="cl-label">Email</span>
+              <span class="cl-value">enrique.cappellini@gmail.com</span>
+            </a>
+            <a href="https://www.instagram.com/enrique.cappellini/" target="_blank" class="contact-link">
+              <span class="cl-label">Instagram</span>
+              <span class="cl-value">@enrique.cappellini</span>
+            </a>
+            <a href="https://www.linkedin.com/in/enriquecappellini" target="_blank" class="contact-link">
+              <span class="cl-label">LinkedIn</span>
+              <span class="cl-value">enriquecappellini</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <span>© 2025 Enrique Cappellini</span>
+        <span>Torino, Italia</span>
+        <span>enriquecappellini.github.io</span>
+      </footer>
+
+    </main>
+
+  </div><!-- /page-wrap -->
 
   <script>
-    function makeHoles(id, count) {
+    // ── Generate sprocket holes to fill the full page height ──
+    function fillSprockets(id) {
       const el = document.getElementById(id);
       if (!el) return;
+      // fill generously — more than enough for any page
+      const count = Math.ceil(document.body.scrollHeight / 32) + 40;
+      el.innerHTML = '';
       for (let i = 0; i < count; i++) {
-        const h = document.createElement('div');
-        h.className = el.classList.contains('film-edge-holes') ? 'vhole' : 'hole';
-        el.appendChild(h);
+        const s = document.createElement('div');
+        s.className = 'sprocket';
+        el.appendChild(s);
       }
     }
-    makeHoles('holes-top', 60);
-    makeHoles('holes-bottom', 60);
-    makeHoles('vholes-left', 80);
-    makeHoles('vholes-right', 80);
 
-    const cur = document.getElementById('cur');
+    function initStrips() {
+      // Make strips as tall as the full document
+      const h = document.documentElement.scrollHeight;
+      document.getElementById('strip-left').style.height  = h + 'px';
+      document.getElementById('strip-right').style.height = h + 'px';
+      fillSprockets('sprockets-left');
+      fillSprockets('sprockets-right');
+    }
+
+    window.addEventListener('load', initStrips);
+    window.addEventListener('resize', initStrips);
+
+    // ── Custom cursor ──
+    const cur  = document.getElementById('cur');
     const ring = document.getElementById('cur-ring');
     let mx=0, my=0, rx=0, ry=0;
     document.addEventListener('mousemove', e => {
@@ -680,14 +752,17 @@
       requestAnimationFrame(animRing);
     })();
 
+    // ── Nav scroll ──
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
 
+    // ── Parallax hero ──
     const heroBg = document.getElementById('heroBg');
     window.addEventListener('scroll', () => {
       heroBg.style.transform = `translateY(${window.scrollY * 0.45}px)`;
     }, { passive: true });
 
+    // ── Reveal on scroll ──
     const io = new IntersectionObserver(entries => {
       entries.forEach((e, i) => {
         if (e.isIntersecting) {

@@ -263,46 +263,46 @@
     .work-heading em { font-style: italic; color: var(--orange); }
 
     /* ── PROJECT ROWS ── */
-    .projects-list { display: flex; flex-direction: column; gap: 0; }
+    .projects-list { display: flex; flex-direction: column; }
 
     .proj-row {
       display: grid;
-      grid-template-columns: 80px 1fr 1fr;
-      align-items: center;
-      gap: 40px;
-      padding: 36px 0;
+      grid-template-columns: 160px 1fr 280px;
+      align-items: start;
+      gap: 0 60px;
+      padding: 40px 0;
       border-top: 1px solid rgba(255,255,255,0.08);
       text-decoration: none;
       color: inherit;
       position: relative;
-      transition: all .35s ease;
       cursor: pointer;
     }
     .proj-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
-
-    /* expanding image on hover */
     .proj-row::before {
       content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(255,255,255,0.03);
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0.02);
       opacity: 0;
-      transition: opacity .3s ease;
+      transition: opacity .3s;
       pointer-events: none;
     }
     .proj-row:hover::before { opacity: 1; }
 
-    .proj-row-num {
-      font-family: 'IM Fell English', serif;
-      font-size: 52px;
-      font-weight: 400;
-      color: rgba(255,255,255,0.1);
-      line-height: 1;
-      transition: color .35s ease;
+    /* DATE */
+    .proj-row-date {
+      font-family: 'Courier Prime', monospace;
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.22);
+      line-height: 1.5;
+      padding-top: 6px;
+      transition: color .35s;
     }
-    .proj-row:hover .proj-row-num { color: var(--orange); }
+    .proj-row:hover .proj-row-date { color: var(--orange); }
 
-    .proj-row-main {}
+    /* TITLE */
+    .proj-row-main { padding-left: 32px; }
     .proj-row-cat {
       font-size: 10px;
       letter-spacing: .22em;
@@ -312,75 +312,162 @@
     }
     .proj-row-title {
       font-family: 'IM Fell English', serif;
-      font-size: clamp(28px, 3.5vw, 52px);
+      font-size: clamp(30px, 3.2vw, 52px);
       font-weight: 400;
       line-height: 1.0;
       color: #f0ece4;
-      transition: transform .35s ease;
+      transition: transform .4s cubic-bezier(.22,1,.36,1);
     }
     .proj-row-title em { font-style: italic; color: var(--orange); }
-    .proj-row:hover .proj-row-title { transform: translateX(8px); }
+    .proj-row:hover .proj-row-title { transform: translateX(10px); }
 
-    .proj-row-side {
+    /* ROLL COLUMN */
+    .proj-roll-col {
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
-      gap: 12px;
+      align-items: center;
+      padding-top: 4px;
     }
-    .proj-row-tags { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
-    .proj-row-tag {
-      font-size: 9px;
-      letter-spacing: .14em;
+
+    /* ── CANISTER ── */
+    .roll-canister {
+      width: 64px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+      transition: transform .4s cubic-bezier(.22,1,.36,1);
+    }
+    .proj-row:hover .roll-canister { transform: translateY(-3px); }
+
+    .roll-cap {
+      width: 48px; height: 14px;
+      margin: 0 auto;
+      border-radius: 5px 5px 0 0;
+      background: linear-gradient(180deg, #4a4540 0%, #2e2a26 100%);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-bottom: none;
+    }
+    .roll-body {
+      width: 64px; height: 58px;
+      border-radius: 5px;
+      background: linear-gradient(150deg, #2e2a26 0%, #1c1814 50%, #0e0c0a 100%);
+      border: 1px solid rgba(255,255,255,0.10);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .roll-body::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent, transparent 7px,
+        rgba(255,255,255,0.025) 7px, rgba(255,255,255,0.025) 8px
+      );
+    }
+    .roll-label-iso {
+      font-family: 'Courier Prime', monospace;
+      font-size: 8px; letter-spacing: .12em;
+      color: rgba(255,255,255,0.35);
       text-transform: uppercase;
-      padding: 4px 10px;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 20px;
-      color: rgba(255,255,255,0.45);
-      transition: all .25s;
+      position: relative; z-index: 1;
     }
-    .proj-row:hover .proj-row-tag { border-color: var(--orange); color: var(--orange); }
+    .roll-label-name {
+      font-family: 'Courier Prime', monospace;
+      font-size: 7px; letter-spacing: .08em;
+      color: var(--orange);
+      text-transform: uppercase;
+      position: relative; z-index: 1;
+    }
+    /* tongue at bottom of canister */
+    .roll-tongue {
+      width: 28px; height: 8px;
+      background: #0e0c0a;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-top: none;
+      border-radius: 0 0 3px 3px;
+      margin: 0 auto;
+    }
+
+    /* ── FILM STRIP (expands on hover) ── */
+    .roll-film {
+      width: 56px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .6s cubic-bezier(.22,1,.36,1);
+    }
+    .proj-row:hover .roll-film { max-height: 400px; }
+
+    .roll-film-inner {
+      width: 100%;
+      background: #0d0b09;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    /* sprocket holes via repeating gradient on sides */
+    .roll-film-inner::before,
+    .roll-film-inner::after {
+      content: '';
+      position: absolute; top: 0; bottom: 0; width: 8px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #0d0b09 0px, #0d0b09 5px,
+        #1e1a16 5px, #1e1a16 12px,
+        #0d0b09 12px, #0d0b09 16px
+      );
+      z-index: 2;
+    }
+    .roll-film-inner::before { left: 0; }
+    .roll-film-inner::after  { right: 0; }
+
+    .roll-film-desc {
+      padding: 10px 12px 8px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 8.5px;
+      line-height: 1.65;
+      letter-spacing: .02em;
+      color: rgba(255,255,255,0.4);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .roll-film-frame {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: rgba(18,14,10,0.95);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .roll-film-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover; opacity: .8;
+    }
+    .roll-film-frame-ph {
+      font-size: 20px; opacity: .18;
+    }
+
+    /* arrow hint */
     .proj-row-arrow {
-      font-size: 20px;
-      color: rgba(255,255,255,0.2);
-      transition: all .35s ease;
+      position: absolute; right: 0; top: 44px;
+      font-size: 16px;
+      color: rgba(255,255,255,0.12);
+      transition: color .3s, transform .3s;
     }
     .proj-row:hover .proj-row-arrow {
       color: var(--orange);
-      transform: translate(4px, -4px);
-    }
-
-    /* image reveal on hover */
-    .proj-row-img {
-      position: absolute;
-      right: 0; top: 50%;
-      transform: translateY(-50%) scale(0.92);
-      width: 220px; height: 140px;
-      overflow: hidden;
-      opacity: 0;
-      transition: opacity .4s ease, transform .4s ease;
-      pointer-events: none;
-      z-index: 10;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .proj-row-img img { width:100%;height:100%;object-fit:cover; }
-    .proj-row-img-placeholder {
-      width:100%;height:100%;
-      background: rgba(20,16,12,0.9);
-      display:flex;align-items:center;justify-content:center;
-      font-size:28px;opacity:.3;
-    }
-    .proj-row:hover .proj-row-img {
-      opacity: 1;
-      transform: translateY(-50%) scale(1);
+      transform: translate(3px, -3px);
     }
 
     @media (max-width: 900px) {
-      .proj-row { grid-template-columns: 48px 1fr; gap: 20px; }
-      .proj-row-side { display: none; }
-      .proj-row-img { display: none; }
+      .proj-row { grid-template-columns: 100px 1fr; }
+      .proj-roll-col, .proj-row-arrow { display: none; }
     }
 
-    /* ── CATEGORIES ── */
+        /* ── CATEGORIES ── */
     .categories-row {
       display: grid;
       grid-template-columns: repeat(3,1fr);
@@ -549,64 +636,88 @@
 
         <div class="projects-list reveal">
 
-          <!-- Row 1 -->
+          <!-- ── 01 Cinema Immersivo ── -->
           <a href="modellazione-3d.html" class="proj-row">
-            <div class="proj-row-num">01</div>
+            <div class="proj-row-date">Gennaio<br>2026</div>
             <div class="proj-row-main">
               <div class="proj-row-cat">Cinema · Installazione</div>
               <div class="proj-row-title">Cinema<br><em>Immersivo</em></div>
             </div>
-            <div class="proj-row-side">
-              <div class="proj-row-tags">
-                <span class="proj-row-tag">Blender</span>
-                <span class="proj-row-tag">Unity</span>
-                <span class="proj-row-tag">3D</span>
+            <div class="proj-roll-col">
+              <div class="roll-canister">
+                <div class="roll-cap"></div>
+                <div class="roll-body">
+                  <span class="roll-label-iso">35mm · 400</span>
+                  <span class="roll-label-name">EC–01</span>
+                </div>
+                <div class="roll-tongue"></div>
               </div>
-              <div class="proj-row-arrow">↗</div>
+              <div class="roll-film">
+                <div class="roll-film-inner">
+                  <div class="roll-film-desc">Installazione audiovisiva immersiva. Spazio narrativo a 360°.</div>
+                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🎬</div></div>
+                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🎞</div></div>
+                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🎥</div></div>
+                </div>
+              </div>
             </div>
-            <div class="proj-row-img">
-              <div class="proj-row-img-placeholder">🎬</div>
-            </div>
+            <div class="proj-row-arrow">↗</div>
           </a>
 
-          <!-- Row 2 -->
+          <!-- ── 02 Realtà Virtuale ── -->
           <a href="modellazione-3d.html" class="proj-row">
-            <div class="proj-row-num">02</div>
+            <div class="proj-row-date">Gennaio<br>2026</div>
             <div class="proj-row-main">
               <div class="proj-row-cat">3D · Interattivo</div>
               <div class="proj-row-title">Realtà<br><em>Virtuale</em></div>
             </div>
-            <div class="proj-row-side">
-              <div class="proj-row-tags">
-                <span class="proj-row-tag">VR</span>
-                <span class="proj-row-tag">Blender</span>
-                <span class="proj-row-tag">Real-time</span>
+            <div class="proj-roll-col">
+              <div class="roll-canister">
+                <div class="roll-cap"></div>
+                <div class="roll-body">
+                  <span class="roll-label-iso">35mm · 200</span>
+                  <span class="roll-label-name">EC–02</span>
+                </div>
+                <div class="roll-tongue"></div>
               </div>
-              <div class="proj-row-arrow">↗</div>
+              <div class="roll-film">
+                <div class="roll-film-inner">
+                  <div class="roll-film-desc">Ambiente VR real-time con asset Blender. Esplorazione libera.</div>
+                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🧊</div></div>
+                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🌐</div></div>
+                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🕶</div></div>
+                </div>
+              </div>
             </div>
-            <div class="proj-row-img">
-              <div class="proj-row-img-placeholder">🧊</div>
-            </div>
+            <div class="proj-row-arrow">↗</div>
           </a>
 
-          <!-- Row 3 -->
+          <!-- ── 03 Figma Prototype ── -->
           <a href="ux-design.html" class="proj-row">
-            <div class="proj-row-num">03</div>
+            <div class="proj-row-date">Gennaio<br>2026</div>
             <div class="proj-row-main">
               <div class="proj-row-cat">UI/UX · Design</div>
               <div class="proj-row-title">Figma<br><em>Prototype</em></div>
             </div>
-            <div class="proj-row-side">
-              <div class="proj-row-tags">
-                <span class="proj-row-tag">Figma</span>
-                <span class="proj-row-tag">UI/UX</span>
-                <span class="proj-row-tag">Prototipo</span>
+            <div class="proj-roll-col">
+              <div class="roll-canister">
+                <div class="roll-cap"></div>
+                <div class="roll-body">
+                  <span class="roll-label-iso">35mm · 100</span>
+                  <span class="roll-label-name">EC–03</span>
+                </div>
+                <div class="roll-tongue"></div>
               </div>
-              <div class="proj-row-arrow">↗</div>
+              <div class="roll-film">
+                <div class="roll-film-inner">
+                  <div class="roll-film-desc">Prototipo interattivo ad alta fedeltà. Sistema di design coerente.</div>
+                  <div class="roll-film-frame"><div class="roll-film-frame-ph">📐</div></div>
+                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🖥</div></div>
+                  <div class="roll-film-frame"><div class="roll-film-frame-ph">✦</div></div>
+                </div>
+              </div>
             </div>
-            <div class="proj-row-img">
-              <div class="proj-row-img-placeholder">📐</div>
-            </div>
+            <div class="proj-row-arrow">↗</div>
           </a>
 
         </div>

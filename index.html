@@ -256,9 +256,7 @@
     .work-heading {
       font-family: 'IM Fell English', serif;
       font-size: clamp(38px, 4.5vw, 64px);
-      font-weight: 400;
-      line-height: 1.1;
-      margin-bottom: 72px;
+      font-weight: 400; line-height: 1.1; margin-bottom: 72px;
     }
     .work-heading em { font-style: italic; color: var(--orange); }
 
@@ -266,205 +264,222 @@
     .projects-list { display: flex; flex-direction: column; }
 
     .proj-row {
-      display: grid;
-      grid-template-columns: 160px 1fr 280px;
-      align-items: start;
-      gap: 0 60px;
-      padding: 40px 0;
+      display: flex;
+      align-items: center;
+      padding: 36px 0;
       border-top: 1px solid rgba(255,255,255,0.08);
       text-decoration: none;
       color: inherit;
       position: relative;
       cursor: pointer;
+      gap: 0;
+      overflow: hidden;
     }
     .proj-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
     .proj-row::before {
       content: '';
       position: absolute; inset: 0;
-      background: rgba(255,255,255,0.02);
-      opacity: 0;
-      transition: opacity .3s;
-      pointer-events: none;
+      background: rgba(255,255,255,0.018);
+      opacity: 0; transition: opacity .3s; pointer-events: none;
     }
     .proj-row:hover::before { opacity: 1; }
 
     /* DATE */
     .proj-row-date {
       font-family: 'Courier Prime', monospace;
-      font-size: 11px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.22);
-      line-height: 1.5;
-      padding-top: 6px;
+      font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.22); line-height: 1.5;
+      width: 120px; flex-shrink: 0;
       transition: color .35s;
     }
     .proj-row:hover .proj-row-date { color: var(--orange); }
 
-    /* TITLE */
-    .proj-row-main { padding-left: 32px; }
+    /* TITLE BLOCK */
+    .proj-row-main {
+      flex-shrink: 0;
+      width: 300px;
+      padding-left: 32px;
+    }
     .proj-row-cat {
-      font-size: 10px;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 10px;
+      font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 8px;
     }
     .proj-row-title {
       font-family: 'IM Fell English', serif;
-      font-size: clamp(30px, 3.2vw, 52px);
-      font-weight: 400;
-      line-height: 1.0;
-      color: #f0ece4;
+      font-size: clamp(26px, 2.8vw, 46px);
+      font-weight: 400; line-height: 1.0; color: #f0ece4;
       transition: transform .4s cubic-bezier(.22,1,.36,1);
     }
     .proj-row-title em { font-style: italic; color: var(--orange); }
-    .proj-row:hover .proj-row-title { transform: translateX(10px); }
+    .proj-row:hover .proj-row-title { transform: translateX(6px); }
 
-    /* ROLL COLUMN */
-    .proj-roll-col {
+    /* ROLL AREA — fills remaining space */
+    .proj-roll-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding-left: 48px;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    /* ── CANISTER (SVG-like CSS icon) ── */
+    .roll-canister {
+      flex-shrink: 0;
+      width: 58px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 4px;
-    }
-
-    /* ── CANISTER ── */
-    .roll-canister {
-      width: 64px;
-      flex-shrink: 0;
       position: relative;
       z-index: 2;
-      transition: transform .4s cubic-bezier(.22,1,.36,1);
+      transition: transform .35s cubic-bezier(.22,1,.36,1);
     }
-    .proj-row:hover .roll-canister { transform: translateY(-3px); }
+    .proj-row:hover .roll-canister { transform: scale(1.06); }
 
-    .roll-cap {
-      width: 48px; height: 14px;
-      margin: 0 auto;
-      border-radius: 5px 5px 0 0;
-      background: linear-gradient(180deg, #4a4540 0%, #2e2a26 100%);
-      border: 1px solid rgba(255,255,255,0.13);
-      border-bottom: none;
+    /* axle top */
+    .can-axle {
+      width: 22px; height: 10px;
+      border-radius: 3px 3px 0 0;
+      background: linear-gradient(180deg, #4a4540 0%, #2a2520 100%);
+      border: 1px solid rgba(255,255,255,0.18); border-bottom: none;
     }
-    .roll-body {
-      width: 64px; height: 58px;
-      border-radius: 5px;
-      background: linear-gradient(150deg, #2e2a26 0%, #1c1814 50%, #0e0c0a 100%);
-      border: 1px solid rgba(255,255,255,0.10);
+    /* main body */
+    .can-body {
+      width: 58px; height: 72px;
+      border-radius: 4px;
+      background: linear-gradient(160deg, #f5f0e8 0%, #e8e0d0 40%, #d0c8b8 100%);
+      border: 1.5px solid rgba(0,0,0,0.25);
+      position: relative;
+      overflow: hidden;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 4px;
-      overflow: hidden;
-      position: relative;
+      gap: 2px;
     }
-    .roll-body::before {
+    /* top black cap on body */
+    .can-body::before {
       content: '';
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        90deg,
-        transparent, transparent 7px,
-        rgba(255,255,255,0.025) 7px, rgba(255,255,255,0.025) 8px
-      );
+      position: absolute; top: 0; left: 0; right: 0; height: 14px;
+      background: linear-gradient(180deg, #1a1612 0%, #2a2520 100%);
     }
-    .roll-label-iso {
-      font-family: 'Courier Prime', monospace;
-      font-size: 8px; letter-spacing: .12em;
-      color: rgba(255,255,255,0.35);
-      text-transform: uppercase;
-      position: relative; z-index: 1;
+    /* bottom black base */
+    .can-body::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 10px;
+      background: linear-gradient(180deg, #2a2520 0%, #1a1612 100%);
     }
-    .roll-label-name {
+    .can-label-brand {
       font-family: 'Courier Prime', monospace;
-      font-size: 7px; letter-spacing: .08em;
+      font-size: 8px; font-weight: 700; letter-spacing: .06em;
+      color: #1a1612; text-transform: uppercase;
+      position: relative; z-index: 1; margin-top: 4px;
+    }
+    .can-label-iso {
+      font-family: 'Courier Prime', monospace;
+      font-size: 13px; font-weight: 700; letter-spacing: -.01em;
       color: var(--orange);
-      text-transform: uppercase;
+      position: relative; z-index: 1; line-height: 1;
+    }
+    .can-label-type {
+      font-family: 'Courier Prime', monospace;
+      font-size: 6px; letter-spacing: .08em;
+      color: rgba(26,22,18,0.6); text-transform: uppercase;
       position: relative; z-index: 1;
     }
-    /* tongue at bottom of canister */
-    .roll-tongue {
-      width: 28px; height: 8px;
-      background: #0e0c0a;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-top: none;
-      border-radius: 0 0 3px 3px;
-      margin: 0 auto;
+    /* bottom tongue */
+    .can-tongue {
+      width: 20px; height: 10px;
+      background: linear-gradient(180deg, #2a2824 0%, #1c1814 100%);
+      border: 1px solid rgba(255,255,255,0.08); border-top: none;
+      border-radius: 0 0 2px 2px;
     }
 
-    /* ── FILM STRIP (expands on hover) ── */
+    /* ── FILM STRIP — expands horizontally ── */
     .roll-film {
-      width: 56px;
-      max-height: 0;
+      height: 92px;        /* same height as the canister visual area */
+      max-width: 0;
       overflow: hidden;
-      transition: max-height .6s cubic-bezier(.22,1,.36,1);
+      transition: max-width .65s cubic-bezier(.22,1,.36,1);
+      display: flex;
+      align-items: stretch;
+      flex-shrink: 0;
     }
-    .proj-row:hover .roll-film { max-height: 400px; }
+    .proj-row:hover .roll-film {
+      max-width: 800px;     /* large enough to fill any screen */
+    }
 
     .roll-film-inner {
-      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: stretch;
       background: #0d0b09;
       position: relative;
-      display: flex;
-      flex-direction: column;
+      /* sprocket holes top and bottom */
+      border-top: 10px solid #0d0b09;
+      border-bottom: 10px solid #0d0b09;
+      box-shadow:
+        /* top sprockets */
+        inset 0  9px 0 -6px #1e1a16,
+        inset 0 -9px 0 -6px #1e1a16;
     }
-    /* sprocket holes via repeating gradient on sides */
-    .roll-film-inner::before,
+    /* top sprocket row */
+    .roll-film-inner::before {
+      content: '';
+      position: absolute; top: -10px; left: 0; right: 0; height: 10px;
+      background: repeating-linear-gradient(
+        90deg,
+        #0d0b09 0px, #0d0b09 6px,
+        #1e1a16 6px, #1e1a16 18px,
+        #0d0b09 18px, #0d0b09 22px
+      );
+    }
+    /* bottom sprocket row */
     .roll-film-inner::after {
       content: '';
-      position: absolute; top: 0; bottom: 0; width: 8px;
+      position: absolute; bottom: -10px; left: 0; right: 0; height: 10px;
       background: repeating-linear-gradient(
-        to bottom,
-        #0d0b09 0px, #0d0b09 5px,
-        #1e1a16 5px, #1e1a16 12px,
-        #0d0b09 12px, #0d0b09 16px
+        90deg,
+        #0d0b09 0px, #0d0b09 6px,
+        #1e1a16 6px, #1e1a16 18px,
+        #0d0b09 18px, #0d0b09 22px
       );
-      z-index: 2;
     }
-    .roll-film-inner::before { left: 0; }
-    .roll-film-inner::after  { right: 0; }
 
+    /* desc panel */
     .roll-film-desc {
-      padding: 10px 12px 8px;
+      width: 140px; flex-shrink: 0;
+      padding: 0 14px;
+      display: flex; align-items: center;
       font-family: 'Courier Prime', monospace;
-      font-size: 8.5px;
-      line-height: 1.65;
-      letter-spacing: .02em;
-      color: rgba(255,255,255,0.4);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 9px; line-height: 1.7; letter-spacing: .03em;
+      color: rgba(255,255,255,0.38);
+      border-right: 1px solid rgba(255,255,255,0.06);
     }
 
+    /* photo frames */
     .roll-film-frame {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: rgba(18,14,10,0.95);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      width: 90px; flex-shrink: 0;
+      border-right: 1px solid rgba(255,255,255,0.06);
       display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-      position: relative;
+      overflow: hidden; background: rgba(20,16,12,0.9);
     }
-    .roll-film-frame img {
-      width: 100%; height: 100%;
-      object-fit: cover; opacity: .8;
-    }
-    .roll-film-frame-ph {
-      font-size: 20px; opacity: .18;
-    }
+    .roll-film-frame img { width:100%;height:100%;object-fit:cover;opacity:.82; }
+    .roll-film-frame-ph { font-size: 22px; opacity: .15; }
 
-    /* arrow hint */
+    /* arrow */
     .proj-row-arrow {
-      position: absolute; right: 0; top: 44px;
+      flex-shrink: 0;
+      margin-left: 20px;
       font-size: 16px;
       color: rgba(255,255,255,0.12);
       transition: color .3s, transform .3s;
     }
-    .proj-row:hover .proj-row-arrow {
-      color: var(--orange);
-      transform: translate(3px, -3px);
-    }
+    .proj-row:hover .proj-row-arrow { color: var(--orange); transform: translate(3px,-3px); }
 
     @media (max-width: 900px) {
-      .proj-row { grid-template-columns: 100px 1fr; }
-      .proj-roll-col, .proj-row-arrow { display: none; }
+      .proj-row { flex-wrap: wrap; }
+      .proj-row-main { width: auto; flex: 1; }
+      .proj-roll-area { display: none; }
+      .proj-row-arrow { display: none; }
     }
 
         /* ── CATEGORIES ── */
@@ -636,21 +651,22 @@
 
         <div class="projects-list reveal">
 
-          <!-- ── 01 Cinema Immersivo ── -->
+          <!-- ── 01 ── -->
           <a href="modellazione-3d.html" class="proj-row">
             <div class="proj-row-date">Gennaio<br>2026</div>
             <div class="proj-row-main">
               <div class="proj-row-cat">Cinema · Installazione</div>
               <div class="proj-row-title">Cinema<br><em>Immersivo</em></div>
             </div>
-            <div class="proj-roll-col">
+            <div class="proj-roll-area">
               <div class="roll-canister">
-                <div class="roll-cap"></div>
-                <div class="roll-body">
-                  <span class="roll-label-iso">35mm · 400</span>
-                  <span class="roll-label-name">EC–01</span>
+                <div class="can-axle"></div>
+                <div class="can-body">
+                  <span class="can-label-brand">EC Film</span>
+                  <span class="can-label-iso">400</span>
+                  <span class="can-label-type">B&W 35mm</span>
                 </div>
-                <div class="roll-tongue"></div>
+                <div class="can-tongue"></div>
               </div>
               <div class="roll-film">
                 <div class="roll-film-inner">
@@ -664,21 +680,22 @@
             <div class="proj-row-arrow">↗</div>
           </a>
 
-          <!-- ── 02 Realtà Virtuale ── -->
+          <!-- ── 02 ── -->
           <a href="modellazione-3d.html" class="proj-row">
             <div class="proj-row-date">Gennaio<br>2026</div>
             <div class="proj-row-main">
               <div class="proj-row-cat">3D · Interattivo</div>
               <div class="proj-row-title">Realtà<br><em>Virtuale</em></div>
             </div>
-            <div class="proj-roll-col">
+            <div class="proj-roll-area">
               <div class="roll-canister">
-                <div class="roll-cap"></div>
-                <div class="roll-body">
-                  <span class="roll-label-iso">35mm · 200</span>
-                  <span class="roll-label-name">EC–02</span>
+                <div class="can-axle"></div>
+                <div class="can-body">
+                  <span class="can-label-brand">EC Film</span>
+                  <span class="can-label-iso">200</span>
+                  <span class="can-label-type">Color 35mm</span>
                 </div>
-                <div class="roll-tongue"></div>
+                <div class="can-tongue"></div>
               </div>
               <div class="roll-film">
                 <div class="roll-film-inner">
@@ -692,21 +709,22 @@
             <div class="proj-row-arrow">↗</div>
           </a>
 
-          <!-- ── 03 Figma Prototype ── -->
+          <!-- ── 03 ── -->
           <a href="ux-design.html" class="proj-row">
             <div class="proj-row-date">Gennaio<br>2026</div>
             <div class="proj-row-main">
               <div class="proj-row-cat">UI/UX · Design</div>
               <div class="proj-row-title">Figma<br><em>Prototype</em></div>
             </div>
-            <div class="proj-roll-col">
+            <div class="proj-roll-area">
               <div class="roll-canister">
-                <div class="roll-cap"></div>
-                <div class="roll-body">
-                  <span class="roll-label-iso">35mm · 100</span>
-                  <span class="roll-label-name">EC–03</span>
+                <div class="can-axle"></div>
+                <div class="can-body">
+                  <span class="can-label-brand">EC Film</span>
+                  <span class="can-label-iso">100</span>
+                  <span class="can-label-type">Color 35mm</span>
                 </div>
-                <div class="roll-tongue"></div>
+                <div class="can-tongue"></div>
               </div>
               <div class="roll-film">
                 <div class="roll-film-inner">

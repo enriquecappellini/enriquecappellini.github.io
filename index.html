@@ -10,12 +10,11 @@
     :root {
       --cream:   #f5f0e8;
       --paper:   #ede7d9;
-      --warm:    #d9cfc0;
-      --ink:     #1a1612;
-      --ink2:    #3d3530;
-      --muted:   #8c7f72;
+      --warm:    #3a3530;
+      --ink:     #f0ece4;
+      --ink2:    #c8c0b4;
+      --muted:   #a09488;
       --orange:  #c84b00;
-      --strip-w: 52px; /* width of each vertical film strip */
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,7 +22,7 @@
 
     body {
       background-color: var(--cream);
-      background-image: url('film-ref.jpg');
+      background-image: url('film-bg.jpg');
       background-size: cover;
       background-attachment: fixed;
       background-position: center center;
@@ -40,7 +39,7 @@
       content: '';
       position: fixed;
       inset: 0;
-      background: rgba(245, 240, 232, 0.80);
+      background: rgba(12, 10, 8, 0.55);
       z-index: 0;
       pointer-events: none;
     }
@@ -66,47 +65,16 @@
       opacity: .4;
     }
 
-    /* ══════════════════════════════════════
-       VERTICAL FILM STRIPS — scroll with page
-    ══════════════════════════════════════ */
-    .film-strip-v {
-      position: absolute;
-      top: 0;
-      width: var(--strip-w);
-      background-image: url('film-ref.jpg');
-      background-size: cover;
-      background-repeat: repeat-y;
-      background-position: center top;
-      z-index: 50;
-      pointer-events: none;
-    }
-    .film-strip-v.left  { left: 0; }
-    .film-strip-v.right { right: 0; transform: scaleX(-1); }
+    
 
-    /* slight dark overlay so it doesn't overpower */
-    .film-strip-v::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(8, 12, 18, 0.15);
-    }
-
-    /* inner shadow to blend smoothly into page */
-    .film-strip-v.left  { box-shadow:  6px 0 24px rgba(0,0,0,0.22); }
-    .film-strip-v.right { box-shadow: -6px 0 24px rgba(0,0,0,0.22); }
-
-    /* Wrapper */
-    .page-wrap {
-      position: relative;
-      overflow: hidden;
-    }
+    .page-wrap { position: relative; }
 
     /* ── NAV ── */
     nav {
       position: fixed;
       top: 0;
-      left: var(--strip-w);
-      right: var(--strip-w);
+      left: 0;
+      right: 0;
       z-index: 100;
       display: flex;
       justify-content: space-between;
@@ -115,7 +83,7 @@
       transition: background .3s, border-color .3s;
     }
     nav.scrolled {
-      background: rgba(245,240,232,.94);
+      background: rgba(12,10,8,0.88);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--warm);
     }
@@ -142,7 +110,7 @@
     .hero {
       position: relative;
       height: 100vh;
-      margin: 0 var(--strip-w);
+      margin: 0;
       overflow: hidden;
     }
     .hero-bg {
@@ -161,9 +129,9 @@
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(245,240,232,.08) 0%,
-        rgba(245,240,232,.15) 50%,
-        rgba(245,240,232,.85) 100%
+        rgba(0,0,0,0.0) 0%,
+        rgba(0,0,0,0.15) 50%,
+        rgba(12,10,8,0.80) 100%
       );
     }
     .hero-content {
@@ -186,7 +154,7 @@
       font-weight: 400;
       line-height: .92;
       letter-spacing: -.01em;
-      color: var(--ink);
+      color: #f0ece4;
       margin-bottom: 28px;
       opacity: 0;
       animation: fadeUp .8s ease .5s forwards;
@@ -194,7 +162,7 @@
     .hero-name em { font-style: italic; color: var(--orange); }
     .hero-sub {
       font-size: 12px;
-      color: var(--ink2);
+      color: #c8c0b4;
       max-width: 440px;
       line-height: 1.9;
       opacity: 0;
@@ -224,11 +192,11 @@
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
 
     /* ── MAIN ── */
-    main { margin: 0 var(--strip-w); }
+    main { margin: 0; }
 
     .section {
       padding: 100px 52px;
-      border-top: 1px solid var(--warm);
+      border-top: 1px solid rgba(255,255,255,0.08);
     }
     .section-label {
       font-size: 10px;
@@ -276,11 +244,11 @@
       border: 1px solid var(--warm);
     }
     .skill-item {
-      background: var(--cream);
+      background: rgba(20,16,12,0.55);
       padding: 18px 22px;
       transition: background .2s;
     }
-    .skill-item:hover { background: var(--paper); }
+    .skill-item:hover { background: rgba(40,32,24,0.65); }
     .skill-name { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
     .skill-level { font-size: 10px; color: var(--muted); }
 
@@ -330,13 +298,13 @@
       align-items: center;
       justify-content: center;
       gap: 12px;
-      background: var(--paper);
+      background: rgba(20,16,12,0.7);
       transition: background .3s;
     }
-    .project-card:hover .project-placeholder { background: var(--warm); }
+    .project-card:hover .project-placeholder { background: rgba(40,32,24,0.75); }
     .ph-icon  { font-size: 26px; opacity: .3; }
     .ph-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-    .ph-code  { font-size: 10px; color: var(--warm); font-family: 'Courier Prime', monospace; margin-top: 6px; }
+    .ph-code  { font-size: 10px; color: #555; font-family: 'Courier Prime', monospace; margin-top: 6px; }
     .project-overlay {
       position: absolute;
       inset: 0;
@@ -372,7 +340,7 @@
       margin-top: 40px;
     }
     .cat-item {
-      background: var(--cream);
+      background: rgba(20,16,12,0.55);
       padding: 32px 36px;
       display: flex;
       align-items: center;
@@ -382,7 +350,7 @@
       color: inherit;
       cursor: pointer;
     }
-    .cat-item:hover { background: var(--paper); }
+    .cat-item:hover { background: rgba(40,32,24,0.65); }
     .cat-num {
       font-family: 'IM Fell English', serif;
       font-size: 50px;
@@ -416,7 +384,7 @@
     .cl-value {
       font-size: 13px;
       color: var(--ink);
-      border-bottom: 1px solid var(--warm);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
       padding-bottom: 7px;
       transition: color .2s, border-color .2s;
     }
@@ -424,7 +392,7 @@
 
     /* ── FOOTER ── */
     footer {
-      border-top: 1px solid var(--warm);
+      border-top: 1px solid rgba(255,255,255,0.08);
       padding: 28px 52px;
       display: flex;
       justify-content: space-between;
@@ -440,7 +408,6 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      :root { --strip-w: 32px; }
       nav { padding: 16px 20px; }
       .nav-links { display: none; }
       .hero-content { left: 24px; right: 24px; bottom: 52px; }
@@ -460,12 +427,6 @@
   <div id="cur-ring"></div>
 
   <div class="page-wrap">
-
-    <!-- ── LEFT FILM STRIP ── -->
-    <div class="film-strip-v left" id="strip-left"></div>
-
-    <!-- ── RIGHT FILM STRIP ── -->
-    <div class="film-strip-v right" id="strip-right"></div>
 
     <!-- NAV -->
     <nav id="nav">

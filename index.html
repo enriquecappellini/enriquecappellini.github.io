@@ -12,8 +12,8 @@
       --paper:   #ede7d9;
       --warm:    #3a3530;
       --ink:     #f0ece4;
-      --ink2:    #c8c0b4;
-      --muted:   #a09488;
+      --ink2:    #ddd8d0;
+      --muted:   #c8bfb5;
       --orange:  #c84b00;
     }
 
@@ -308,7 +308,7 @@
     .wa-sub {
       flex: 1; padding-left: 52px;
       font-size: 11px; letter-spacing: .06em;
-      color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.55);
     }
 
     .wa-arrow {
@@ -319,12 +319,21 @@
     .work-area:hover .wa-arrow { color: var(--orange); transform: translate(3px,-3px); }
 
     /* ── RECENT PROJECTS ── */
-    .recent-label {
-      font-size: 15px; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--orange); margin-bottom: 52px;
-      display: flex; align-items: center; gap: 16px;
+
+    .tool-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase;
+      border: 1px solid; border-radius: 20px;
+      padding: 3px 8px; margin-left: 8px;
+      vertical-align: middle; font-family: 'Courier Prime', monospace;
     }
-    .recent-label::before { content:''; width:32px; height:1px; background:var(--orange); }
+    .recent-label {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(32px, 3.5vw, 52px);
+      font-weight: 400; line-height: 1.1;
+      color: #f0ece4; margin-bottom: 52px;
+    }
+    .recent-label em { font-style: italic; color: var(--orange); }
 
     /* project block: full-width, title row on top, tape below */
     .proj-feature {
@@ -359,7 +368,7 @@
     }
     .pf-desc {
       font-size: 11px; line-height: 1.9;
-      color: rgba(255,255,255,0.32);
+      color: rgba(255,255,255,0.65);
       flex: 1; min-width: 200px;
     }
     .pf-btn {
@@ -517,7 +526,7 @@
       align-items: center;
       font-size: 10px;
       letter-spacing: .1em;
-      color: var(--muted);
+      color: rgba(255,255,255,0.55);
     }
 
     /* ── REVEAL ── */
@@ -590,24 +599,6 @@
             Ho <strong>24 anni</strong> e studio <strong>Ingegneria del Cinema e dei Media Digitali</strong> al Politecnico di Torino. La mia pratica si muove tra la fotografia, la modellazione 3D con <strong>Blender</strong> e la prototipazione di interfacce con <strong>Figma</strong>.<br><br>
             Ho esperienza con <strong>Unity</strong> per ambienti interattivi e una curiosità costante per il confine tra tecnica e visione artistica.
           </p>
-          <div class="skills-grid">
-            <div class="skill-item">
-              <div class="skill-name">Fotografia</div>
-              <div class="skill-level">Composizione · Luce · Post-prod</div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-name">Blender</div>
-              <div class="skill-level">Modellazione 3D · Rendering</div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-name">Figma</div>
-              <div class="skill-level">UI/UX · Prototipazione</div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-name">Unity</div>
-              <div class="skill-level">Ambienti interattivi</div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -651,12 +642,21 @@
         </div>
 
         <!-- ── RECENT PROJECTS ── -->
-        <div class="recent-label reveal">Progetti recenti</div>
+        <div class="recent-label reveal">Progetti <em>recenti</em></div>
 
         <!-- PROJECT 1: Cinema Immersivo -->
         <div class="proj-feature reveal">
           <div class="pf-header">
-            <div class="pf-tag">Fotografia · Cinema</div>
+            <div class="pf-tag">Fotografia · Cinema
+              <span class="tool-badge" style="background:rgba(231,76,60,.15);border-color:rgba(231,76,60,.35);color:#e74c3c;">
+                <svg width="10" height="10" viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="45"/><rect x="30" y="25" width="15" height="50" fill="#0a0806"/><rect x="55" y="25" width="15" height="50" fill="#0a0806"/></svg>
+                DaVinci Resolve
+              </span>
+              <span class="tool-badge" style="background:rgba(49,130,206,.15);border-color:rgba(49,130,206,.35);color:#63b3ed;">
+                <svg width="10" height="10" viewBox="0 0 100 100" fill="currentColor"><rect x="10" y="10" width="80" height="80" rx="18"/><path d="M35 65 L50 30 L65 65 M42 52 h16" fill="none" stroke="#0a0806" stroke-width="8" stroke-linecap="round"/></svg>
+                Lr Lightroom
+              </span>
+            </div>
             <div class="pf-title">Cinema <em>Immersivo</em></div>
             <div class="pf-date">Gennaio 2026</div>
             <p class="pf-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>

@@ -256,230 +256,178 @@
     .work-heading {
       font-family: 'IM Fell English', serif;
       font-size: clamp(38px, 4.5vw, 64px);
-      font-weight: 400; line-height: 1.1; margin-bottom: 72px;
+      font-weight: 400; line-height: 1.1; margin-bottom: 80px;
     }
     .work-heading em { font-style: italic; color: var(--orange); }
 
-    /* ── PROJECT ROWS ── */
-    .projects-list { display: flex; flex-direction: column; }
-
-    .proj-row {
-      display: flex;
-      align-items: center;
-      padding: 36px 0;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      text-decoration: none;
-      color: inherit;
-      position: relative;
+    /* ── AREA LINKS (Fotografia / 3D / UX) ── */
+    .work-areas {
+      display: flex; gap: 0;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 100px;
+    }
+    .work-area {
+      flex: 1;
+      padding: 28px 32px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      text-decoration: none; color: inherit;
+      display: flex; align-items: center; gap: 20px;
+      transition: background .25s;
       cursor: pointer;
-      gap: 0;
-      overflow: hidden;
     }
-    .proj-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .proj-row::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: rgba(255,255,255,0.018);
-      opacity: 0; transition: opacity .3s; pointer-events: none;
+    .work-area:last-child { border-right: none; }
+    .work-area:hover { background: rgba(255,255,255,0.04); }
+    .wa-num {
+      font-family: 'IM Fell English', serif;
+      font-size: 40px; font-weight: 400;
+      color: rgba(255,255,255,0.08); line-height: 1;
+      transition: color .3s; flex-shrink: 0;
     }
-    .proj-row:hover::before { opacity: 1; }
+    .work-area:hover .wa-num { color: var(--orange); }
+    .wa-title { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+    .wa-sub   { font-size: 10px; color: var(--muted); letter-spacing: .05em; }
+    .wa-arrow {
+      margin-left: auto; font-size: 16px;
+      color: rgba(255,255,255,0.12); transition: color .3s, transform .3s; flex-shrink: 0;
+    }
+    .work-area:hover .wa-arrow { color: var(--orange); transform: translate(3px,-3px); }
 
-    /* DATE */
-    .proj-row-date {
+    /* ── RECENT PROJECTS ── */
+    .recent-label {
+      font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 52px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .recent-label::before { content:''; width:32px; height:1px; background:var(--orange); }
+
+    .proj-feature {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-bottom: 2px;
+      min-height: 520px;
+      overflow: hidden;
+      position: relative;
+    }
+    .proj-feature.reverse { direction: rtl; }
+    .proj-feature.reverse > * { direction: ltr; }
+
+    /* CAROUSEL SIDE */
+    .pf-carousel {
+      position: relative;
+      overflow: hidden;
+      background: #0a0806;
+    }
+    .pf-slides {
+      display: flex;
+      height: 100%;
+      transition: transform .7s cubic-bezier(.77,0,.18,1);
+    }
+    .pf-slide {
+      min-width: 100%; height: 100%;
+      position: relative; flex-shrink: 0;
+    }
+    .pf-slide img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(.88) saturate(.9);
+      transition: filter .5s;
+    }
+    .pf-slide:hover img { filter: brightness(.95) saturate(1.05); }
+
+    /* slide counter */
+    .pf-counter {
+      position: absolute; bottom: 18px; right: 20px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 10px; letter-spacing: .12em;
+      color: rgba(255,255,255,0.45);
+      z-index: 3;
+    }
+
+    /* carousel nav dots */
+    .pf-dots {
+      position: absolute; bottom: 18px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 6px; z-index: 3;
+    }
+    .pf-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      cursor: pointer; transition: background .3s, transform .3s;
+      border: none; padding: 0;
+    }
+    .pf-dot.active { background: var(--orange); transform: scale(1.3); }
+
+    /* prev/next arrows */
+    .pf-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      z-index: 4; background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7); font-size: 14px;
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background .2s, color .2s;
+      backdrop-filter: blur(4px);
+    }
+    .pf-arrow:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
+    .pf-arrow.prev { left: 14px; }
+    .pf-arrow.next { right: 14px; }
+
+    /* INFO SIDE */
+    .pf-info {
+      background: rgba(12,10,8,0.6);
+      backdrop-filter: blur(2px);
+      padding: 56px 52px;
+      display: flex; flex-direction: column; justify-content: center;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .pf-tag {
+      font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 20px;
+    }
+    .pf-title {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(32px, 3.5vw, 56px);
+      font-weight: 400; line-height: 1.0;
+      color: #f0ece4; margin-bottom: 28px;
+    }
+    .pf-title em { font-style: italic; color: var(--orange); }
+    .pf-desc {
+      font-size: 12px; line-height: 2;
+      color: rgba(255,255,255,0.42); margin-bottom: 40px;
+      max-width: 380px;
+    }
+    .pf-date {
       font-family: 'Courier Prime', monospace;
       font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
-      color: rgba(255,255,255,0.22); line-height: 1.5;
-      width: 120px; flex-shrink: 0;
-      transition: color .35s;
+      color: rgba(255,255,255,0.2); margin-bottom: 36px;
     }
-    .proj-row:hover .proj-row-date { color: var(--orange); }
-
-    /* TITLE BLOCK */
-    .proj-row-main {
-      flex-shrink: 0;
-      width: 300px;
-      padding-left: 32px;
-    }
-    .proj-row-cat {
-      font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--orange); margin-bottom: 8px;
-    }
-    .proj-row-title {
-      font-family: 'IM Fell English', serif;
-      font-size: clamp(26px, 2.8vw, 46px);
-      font-weight: 400; line-height: 1.0; color: #f0ece4;
-      transition: transform .4s cubic-bezier(.22,1,.36,1);
-    }
-    .proj-row-title em { font-style: italic; color: var(--orange); }
-    .proj-row:hover .proj-row-title { transform: translateX(6px); }
-
-    /* ROLL AREA — fills remaining space */
-    .proj-roll-area {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      padding-left: 48px;
-      min-width: 0;
-      overflow: hidden;
-    }
-
-    /* ── CANISTER (SVG-like CSS icon) ── */
-    .roll-canister {
-      flex-shrink: 0;
-      width: 58px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      z-index: 2;
-      transition: transform .35s cubic-bezier(.22,1,.36,1);
-    }
-    .proj-row:hover .roll-canister { transform: scale(1.06); }
-
-    /* axle top */
-    .can-axle {
-      width: 22px; height: 10px;
-      border-radius: 3px 3px 0 0;
-      background: linear-gradient(180deg, #4a4540 0%, #2a2520 100%);
-      border: 1px solid rgba(255,255,255,0.18); border-bottom: none;
-    }
-    /* main body */
-    .can-body {
-      width: 58px; height: 72px;
-      border-radius: 4px;
-      background: linear-gradient(160deg, #f5f0e8 0%, #e8e0d0 40%, #d0c8b8 100%);
-      border: 1.5px solid rgba(0,0,0,0.25);
-      position: relative;
-      overflow: hidden;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 2px;
-    }
-    /* top black cap on body */
-    .can-body::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 14px;
-      background: linear-gradient(180deg, #1a1612 0%, #2a2520 100%);
-    }
-    /* bottom black base */
-    .can-body::after {
-      content: '';
-      position: absolute; bottom: 0; left: 0; right: 0; height: 10px;
-      background: linear-gradient(180deg, #2a2520 0%, #1a1612 100%);
-    }
-    .can-label-brand {
+    .pf-btn {
+      display: inline-flex; align-items: center; gap: 10px;
       font-family: 'Courier Prime', monospace;
-      font-size: 8px; font-weight: 700; letter-spacing: .06em;
-      color: #1a1612; text-transform: uppercase;
-      position: relative; z-index: 1; margin-top: 4px;
-    }
-    .can-label-iso {
-      font-family: 'Courier Prime', monospace;
-      font-size: 13px; font-weight: 700; letter-spacing: -.01em;
+      font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
       color: var(--orange);
-      position: relative; z-index: 1; line-height: 1;
+      border: 1px solid var(--orange);
+      padding: 12px 24px;
+      text-decoration: none;
+      transition: background .25s, color .25s;
+      width: fit-content;
     }
-    .can-label-type {
-      font-family: 'Courier Prime', monospace;
-      font-size: 6px; letter-spacing: .08em;
-      color: rgba(26,22,18,0.6); text-transform: uppercase;
-      position: relative; z-index: 1;
-    }
-    /* bottom tongue */
-    .can-tongue {
-      width: 20px; height: 10px;
-      background: linear-gradient(180deg, #2a2824 0%, #1c1814 100%);
-      border: 1px solid rgba(255,255,255,0.08); border-top: none;
-      border-radius: 0 0 2px 2px;
-    }
+    .pf-btn:hover { background: var(--orange); color: #0a0806; }
+    .pf-btn-arrow { font-size: 14px; transition: transform .25s; }
+    .pf-btn:hover .pf-btn-arrow { transform: translate(3px,-3px); }
 
-    /* ── FILM STRIP — expands horizontally ── */
-    .roll-film {
-      height: 92px;        /* same height as the canister visual area */
-      max-width: 0;
-      overflow: hidden;
-      transition: max-width .65s cubic-bezier(.22,1,.36,1);
-      display: flex;
-      align-items: stretch;
-      flex-shrink: 0;
-    }
-    .proj-row:hover .roll-film {
-      max-width: 800px;     /* large enough to fill any screen */
-    }
-
-    .roll-film-inner {
-      height: 100%;
-      display: flex;
-      align-items: stretch;
-      background: #0d0b09;
-      position: relative;
-      /* sprocket holes top and bottom */
-      border-top: 10px solid #0d0b09;
-      border-bottom: 10px solid #0d0b09;
-      box-shadow:
-        /* top sprockets */
-        inset 0  9px 0 -6px #1e1a16,
-        inset 0 -9px 0 -6px #1e1a16;
-    }
-    /* top sprocket row */
-    .roll-film-inner::before {
-      content: '';
-      position: absolute; top: -10px; left: 0; right: 0; height: 10px;
-      background: repeating-linear-gradient(
-        90deg,
-        #0d0b09 0px, #0d0b09 6px,
-        #1e1a16 6px, #1e1a16 18px,
-        #0d0b09 18px, #0d0b09 22px
-      );
-    }
-    /* bottom sprocket row */
-    .roll-film-inner::after {
-      content: '';
-      position: absolute; bottom: -10px; left: 0; right: 0; height: 10px;
-      background: repeating-linear-gradient(
-        90deg,
-        #0d0b09 0px, #0d0b09 6px,
-        #1e1a16 6px, #1e1a16 18px,
-        #0d0b09 18px, #0d0b09 22px
-      );
-    }
-
-    /* desc panel */
-    .roll-film-desc {
-      width: 140px; flex-shrink: 0;
-      padding: 0 14px;
-      display: flex; align-items: center;
-      font-family: 'Courier Prime', monospace;
-      font-size: 9px; line-height: 1.7; letter-spacing: .03em;
-      color: rgba(255,255,255,0.38);
-      border-right: 1px solid rgba(255,255,255,0.06);
-    }
-
-    /* photo frames */
-    .roll-film-frame {
-      width: 90px; flex-shrink: 0;
-      border-right: 1px solid rgba(255,255,255,0.06);
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden; background: rgba(20,16,12,0.9);
-    }
-    .roll-film-frame img { width:100%;height:100%;object-fit:cover;opacity:.82; }
-    .roll-film-frame-ph { font-size: 22px; opacity: .15; }
-
-    /* arrow */
-    .proj-row-arrow {
-      flex-shrink: 0;
-      margin-left: 20px;
-      font-size: 16px;
-      color: rgba(255,255,255,0.12);
-      transition: color .3s, transform .3s;
-    }
-    .proj-row:hover .proj-row-arrow { color: var(--orange); transform: translate(3px,-3px); }
+    /* separator between the two projects */
+    .proj-separator { height: 2px; background: rgba(255,255,255,0.04); margin-bottom: 2px; }
 
     @media (max-width: 900px) {
-      .proj-row { flex-wrap: wrap; }
-      .proj-row-main { width: auto; flex: 1; }
-      .proj-roll-area { display: none; }
-      .proj-row-arrow { display: none; }
+      .work-areas { flex-direction: column; }
+      .work-area { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .proj-feature { grid-template-columns: 1fr; min-height: auto; }
+      .proj-feature.reverse { direction: ltr; }
+      .pf-carousel { min-height: 300px; }
+      .pf-info { padding: 36px 28px; }
     }
 
         /* ── CATEGORIES ── */
@@ -647,122 +595,93 @@
 
       <section class="section" id="work">
         <div class="section-label reveal">Work</div>
-        <h2 class="work-heading reveal">Progetti<br><em>recenti</em></h2>
+        <h2 class="work-heading reveal">Aree del<br><em>portfolio</em></h2>
 
-        <div class="projects-list reveal">
-
-          <!-- ── 01 ── -->
-          <a href="modellazione-3d.html" class="proj-row">
-            <div class="proj-row-date">Gennaio<br>2026</div>
-            <div class="proj-row-main">
-              <div class="proj-row-cat">Cinema · Installazione</div>
-              <div class="proj-row-title">Cinema<br><em>Immersivo</em></div>
+        <!-- ── AREA LINKS ── -->
+        <div class="work-areas reveal">
+          <a href="fotografia.html" class="work-area">
+            <div class="wa-num">01</div>
+            <div>
+              <div class="wa-title">Fotografia</div>
+              <div class="wa-sub">Ritratto · Reportage · Cinema</div>
             </div>
-            <div class="proj-roll-area">
-              <div class="roll-canister">
-                <div class="can-axle"></div>
-                <div class="can-body">
-                  <span class="can-label-brand">EC Film</span>
-                  <span class="can-label-iso">400</span>
-                  <span class="can-label-type">B&W 35mm</span>
-                </div>
-                <div class="can-tongue"></div>
-              </div>
-              <div class="roll-film">
-                <div class="roll-film-inner">
-                  <div class="roll-film-desc">Installazione audiovisiva immersiva. Spazio narrativo a 360°.</div>
-                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🎬</div></div>
-                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🎞</div></div>
-                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🎥</div></div>
-                </div>
-              </div>
-            </div>
-            <div class="proj-row-arrow">↗</div>
+            <div class="wa-arrow">↗</div>
           </a>
-
-          <!-- ── 02 ── -->
-          <a href="modellazione-3d.html" class="proj-row">
-            <div class="proj-row-date">Gennaio<br>2026</div>
-            <div class="proj-row-main">
-              <div class="proj-row-cat">3D · Interattivo</div>
-              <div class="proj-row-title">Realtà<br><em>Virtuale</em></div>
+          <a href="modellazione-3d.html" class="work-area">
+            <div class="wa-num">02</div>
+            <div>
+              <div class="wa-title">3D Modelling</div>
+              <div class="wa-sub">Blender · Unity · Rendering</div>
             </div>
-            <div class="proj-roll-area">
-              <div class="roll-canister">
-                <div class="can-axle"></div>
-                <div class="can-body">
-                  <span class="can-label-brand">EC Film</span>
-                  <span class="can-label-iso">200</span>
-                  <span class="can-label-type">Color 35mm</span>
-                </div>
-                <div class="can-tongue"></div>
-              </div>
-              <div class="roll-film">
-                <div class="roll-film-inner">
-                  <div class="roll-film-desc">Ambiente VR real-time con asset Blender. Esplorazione libera.</div>
-                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🧊</div></div>
-                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🌐</div></div>
-                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🕶</div></div>
-                </div>
-              </div>
-            </div>
-            <div class="proj-row-arrow">↗</div>
+            <div class="wa-arrow">↗</div>
           </a>
-
-          <!-- ── 03 ── -->
-          <a href="ux-design.html" class="proj-row">
-            <div class="proj-row-date">Gennaio<br>2026</div>
-            <div class="proj-row-main">
-              <div class="proj-row-cat">UI/UX · Design</div>
-              <div class="proj-row-title">Figma<br><em>Prototype</em></div>
+          <a href="ux-design.html" class="work-area">
+            <div class="wa-num">03</div>
+            <div>
+              <div class="wa-title">UX Design</div>
+              <div class="wa-sub">Figma · UI/UX · Prototipazione</div>
             </div>
-            <div class="proj-roll-area">
-              <div class="roll-canister">
-                <div class="can-axle"></div>
-                <div class="can-body">
-                  <span class="can-label-brand">EC Film</span>
-                  <span class="can-label-iso">100</span>
-                  <span class="can-label-type">Color 35mm</span>
-                </div>
-                <div class="can-tongue"></div>
-              </div>
-              <div class="roll-film">
-                <div class="roll-film-inner">
-                  <div class="roll-film-desc">Prototipo interattivo ad alta fedeltà. Sistema di design coerente.</div>
-                  <div class="roll-film-frame"><div class="roll-film-frame-ph">📐</div></div>
-                  <div class="roll-film-frame"><div class="roll-film-frame-ph">🖥</div></div>
-                  <div class="roll-film-frame"><div class="roll-film-frame-ph">✦</div></div>
-                </div>
-              </div>
-            </div>
-            <div class="proj-row-arrow">↗</div>
+            <div class="wa-arrow">↗</div>
           </a>
-
         </div>
 
-        <div class="categories-row reveal">
-          <a href="fotografia.html" class="cat-item">
-            <div class="cat-num">01</div>
-            <div>
-              <div class="cat-title">Fotografia</div>
-              <div class="cat-sub">Ritratto · Paesaggio · Reportage</div>
+        <!-- ── RECENT PROJECTS ── -->
+        <div class="recent-label reveal">Progetti recenti</div>
+
+        <!-- PROJECT 1: Cinema Immersivo -->
+        <div class="proj-feature reveal" id="pf1">
+          <div class="pf-carousel">
+            <div class="pf-slides" id="pf1-slides">
+              <div class="pf-slide"><img src="cinema1.jpg" alt="Cinema Immersivo"></div>
+              <div class="pf-slide"><img src="cinema2.jpg" alt="Cinema Immersivo"></div>
+              <div class="pf-slide"><img src="cinema3.jpg" alt="Cinema Immersivo"></div>
             </div>
-          </a>
-          <a href="modellazione-3d.html" class="cat-item">
-            <div class="cat-num">02</div>
-            <div>
-              <div class="cat-title">3D & Motion</div>
-              <div class="cat-sub">Blender · Unity · Rendering</div>
+            <button class="pf-arrow prev" onclick="pfPrev('pf1')">&#8592;</button>
+            <button class="pf-arrow next" onclick="pfNext('pf1')">&#8594;</button>
+            <div class="pf-dots" id="pf1-dots">
+              <button class="pf-dot active" onclick="pfGo('pf1',0)"></button>
+              <button class="pf-dot" onclick="pfGo('pf1',1)"></button>
+              <button class="pf-dot" onclick="pfGo('pf1',2)"></button>
             </div>
-          </a>
-          <a href="ux-design.html" class="cat-item">
-            <div class="cat-num">03</div>
-            <div>
-              <div class="cat-title">Design Digitale</div>
-              <div class="cat-sub">Figma · UI/UX · Prototipazione</div>
-            </div>
-          </a>
+            <div class="pf-counter" id="pf1-counter">1 / 3</div>
+          </div>
+          <div class="pf-info">
+            <div class="pf-tag">Fotografia · Cinema</div>
+            <div class="pf-title">Cinema<br><em>Immersivo</em></div>
+            <div class="pf-date">Gennaio 2026</div>
+            <p class="pf-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+            <a href="fotografia.html" class="pf-btn">Scopri il progetto <span class="pf-btn-arrow">↗</span></a>
+          </div>
         </div>
+
+        <div class="proj-separator"></div>
+
+        <!-- PROJECT 2: Realtà Virtuale -->
+        <div class="proj-feature reverse reveal" id="pf2">
+          <div class="pf-carousel">
+            <div class="pf-slides" id="pf2-slides">
+              <div class="pf-slide"><img src="vr1.jpg" alt="Realtà Virtuale"></div>
+              <div class="pf-slide"><img src="vr2.jpg" alt="Realtà Virtuale"></div>
+              <div class="pf-slide"><img src="vr3.jpg" alt="Realtà Virtuale"></div>
+            </div>
+            <button class="pf-arrow prev" onclick="pfPrev('pf2')">&#8592;</button>
+            <button class="pf-arrow next" onclick="pfNext('pf2')">&#8594;</button>
+            <div class="pf-dots" id="pf2-dots">
+              <button class="pf-dot active" onclick="pfGo('pf2',0)"></button>
+              <button class="pf-dot" onclick="pfGo('pf2',1)"></button>
+              <button class="pf-dot" onclick="pfGo('pf2',2)"></button>
+            </div>
+            <div class="pf-counter" id="pf2-counter">1 / 3</div>
+          </div>
+          <div class="pf-info">
+            <div class="pf-tag">3D Modelling · Unity</div>
+            <div class="pf-title">Realtà<br><em>Virtuale</em></div>
+            <div class="pf-date">Gennaio 2026</div>
+            <p class="pf-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+            <a href="modellazione-3d.html" class="pf-btn">Scopri il progetto <span class="pf-btn-arrow">↗</span></a>
+          </div>
+        </div>
+
       </section>
 
       <section class="section" id="contact">
@@ -830,6 +749,26 @@
       heroBg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
     }, { passive: true });
 
+
+    // ── Project Feature Carousels ──
+    const pfState = {};
+    function pfInit(id, total) {
+      pfState[id] = { cur: 0, total };
+    }
+    function pfGo(id, idx) {
+      const s = pfState[id];
+      s.cur = idx;
+      document.getElementById(id+'-slides').style.transform = `translateX(-${idx*100}%)`;
+      document.querySelectorAll(`#${id}-dots .pf-dot`).forEach((d,i) => d.classList.toggle('active', i===idx));
+      document.getElementById(id+'-counter').textContent = `${idx+1} / ${s.total}`;
+    }
+    function pfNext(id) { const s=pfState[id]; pfGo(id,(s.cur+1)%s.total); }
+    function pfPrev(id) { const s=pfState[id]; pfGo(id,(s.cur-1+s.total)%s.total); }
+    pfInit('pf1',3); pfInit('pf2',3);
+
+    // Auto-advance
+    setInterval(()=>{ if(document.hidden) return; pfNext('pf1'); }, 5000);
+    setInterval(()=>{ if(document.hidden) return; pfNext('pf2'); }, 6500);
     // ── Reveal on scroll ──
     const io = new IntersectionObserver(entries => {
       entries.forEach((e, i) => {
